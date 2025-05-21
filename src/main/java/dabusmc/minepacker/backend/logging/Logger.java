@@ -17,19 +17,19 @@ public class Logger {
         }
     }
 
-    public static void message(String owner, String message) {
+    public static void message(String owner, Object message) {
         log(owner, message, LogLevel.MESSAGE, TextColor.RESET);
     }
 
-    public static void info(String owner, String message) {
+    public static void info(String owner, Object message) {
         log(owner, message, LogLevel.INFO, TextColor.GREEN);
     }
 
-    public static void error(String owner, String message) {
+    public static void error(String owner, Object message) {
         log(owner, message, LogLevel.ERROR, TextColor.RED);
     }
 
-    public static void fatal(String owner, String message) {
+    public static void fatal(String owner, Object message) {
         log(owner, message, LogLevel.FATAL, TextColor.RED_UNDERLINED);
     }
 

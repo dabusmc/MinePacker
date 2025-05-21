@@ -1,7 +1,9 @@
 package dabusmc.minepacker;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
+import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.logging.LogLevel;
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,6 +19,10 @@ public class MinePackerApp extends Application {
         new MinePackerRuntime();
         MinePackerRuntime.s_Instance.setLogLevel(LogLevel.MESSAGE);
         MinePackerRuntime.s_Instance.constructModApi(ModApiType.Modrinth);
+
+        // Test
+        Mod jei = MinePackerRuntime.s_Instance.getModApi().getModFromID("u6dRKJwZ");
+        Logger.info("MinePackerApp", jei);
     }
 
     @Override

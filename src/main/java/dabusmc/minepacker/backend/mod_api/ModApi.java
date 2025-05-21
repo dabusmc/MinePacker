@@ -1,5 +1,6 @@
 package dabusmc.minepacker.backend.mod_api;
 
+import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.apis.ModrinthApi;
 import org.json.simple.JSONArray;
@@ -16,7 +17,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
-public class ModApi {
+public abstract class ModApi {
 
     public static ModApi Create(ModApiType type) {
         switch(type) {
@@ -62,7 +63,7 @@ public class ModApi {
         return baseUrl + "/" + extension;
     }
 
-    public HttpResponse<String> get(String url)
+    public HttpResponse<String> get(String url, boolean statusCodeErrorCheck)
     {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -74,7 +75,7 @@ public class ModApi {
         try {
             HttpResponse<String> response = m_Client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() != 200) {
+            if (statusCodeErrorCheck && response.statusCode() != 200) {
                 Logger.fatal("ModApi", "Request threw status code " + response.statusCode());
                 return null;
             }
@@ -88,16 +89,14 @@ public class ModApi {
         return null;
     }
 
-    protected JSONObject getJsonObject(String url) {
+    protected JSONObject convertHttpResponseToJSONObject(HttpResponse<String> response) {
         try {
-            HttpResponse<String> response = get(url);
-
             if (response != null) {
                 String res = response.body();
                 Object obj = m_Parser.parse(res);
                 return (JSONObject) obj;
             } else {
-                Logger.fatal("ModApi", url + " returned null response");
+                Logger.fatal("ModApi", "Http Get returned null response");
             }
         } catch (ParseException e) {
             Logger.fatal("ModApi", e.toString());
@@ -106,16 +105,14 @@ public class ModApi {
         return null;
     }
 
-    protected JSONArray getJsonArray(String url) {
+    protected JSONArray convertHttpResponseToJSONArray(HttpResponse<String> response) {
         try {
-            HttpResponse<String> response = get(url);
-
             if (response != null) {
                 String res = response.body();
                 Object obj = m_Parser.parse(res);
                 return (JSONArray) obj;
             } else {
-                Logger.fatal("ModApi", url + " returned null response");
+                Logger.fatal("ModApi", "Http Get returned null response");
             }
         } catch (ParseException e) {
             Logger.fatal("ModApi", e.toString());
@@ -124,4 +121,8 @@ public class ModApi {
         return null;
     }
 
+    public abstract boolean modIDExists(String id);
+    public abstract Mod getModFromID(String id);
+
+    public abstract Mod constructModFromJsonObject(JSONObject obj);
 }
