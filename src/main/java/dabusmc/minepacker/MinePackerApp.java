@@ -5,6 +5,9 @@ import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
+import dabusmc.minepacker.frontend.base.PageSwitcher;
+import dabusmc.minepacker.frontend.page.SecondTestPage;
+import dabusmc.minepacker.frontend.page.TestPage;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -31,16 +34,10 @@ public class MinePackerApp extends Application {
         stage.setTitle("MinePacker");
         stage.setResizable(false);
 
-        // Initialise temp Scene
-        StackPane pane = new StackPane();
-        Label tempLabel = new Label("Welcome to MinePacker!");
-        pane.getChildren().add(tempLabel);
-
-        Scene temp = new Scene(pane, 640, 400);
-        stage.setScene(temp);
-
-        // Display
-        stage.show();
+        // Initialise Page Switcher
+        new PageSwitcher(stage);
+        PageSwitcher.s_Instance.registerPage("test", new TestPage());
+        PageSwitcher.s_Instance.registerPage("second_test", new SecondTestPage());
     }
 
     public static void main(String[] args) {
