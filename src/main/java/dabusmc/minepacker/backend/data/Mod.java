@@ -1,9 +1,5 @@
 package dabusmc.minepacker.backend.data;
 
-import dabusmc.minepacker.backend.mod_api.ModApiType;
-import dabusmc.minepacker.backend.mod_api.apis.ModrinthApi;
-import org.json.simple.JSONObject;
-
 public class Mod {
 
     private String m_ID;

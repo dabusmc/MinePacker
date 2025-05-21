@@ -34,6 +34,12 @@ public class Logger {
     }
 
 
+    /**
+     * Checks if one LogLevel is more severe than another, making use of {@link #logLevelToInt(LogLevel)}
+     * @param test The LogLevel to test
+     * @param control The LogLevel to test against
+     * @return True if {@code test} is more severe than {@code control}, False if not
+     */
     private static boolean logLevelGreaterThan(LogLevel test, LogLevel control) {
         int testValue = logLevelToInt(test);
         if (testValue == 4) return false;
@@ -41,6 +47,11 @@ public class Logger {
         return testValue >= controlValue;
     }
 
+    /**
+     * Calculates an integer representation of a LogLevel. The higher the severity of a LogLevel message, the higher the integer.
+     * @param level The LogLevel to calculate the representation of
+     * @return The calculated representation
+     */
     private static int logLevelToInt(LogLevel level) {
         switch (level)
         {

@@ -34,6 +34,12 @@ public class PageSwitcher {
         }
     }
 
+    /**
+     * Registers a new page in the PageSwitcher with a given name. If this is the first page registered, this function will automatically call {@link #switchToPage(int)}
+     * @param name The name of the Page being registered
+     * @param page The Page being registered itself
+     * @return The integer index of where the Page is stored internally
+     */
     public int registerPage(String name, Page page) {
         int index = m_Pages.size();
         m_Pages.add(page);
@@ -59,6 +65,10 @@ public class PageSwitcher {
         return index;
     }
 
+    /**
+     * Switches to the Page with the given index. If the index is invalid this function does nothing
+     * @param index The index of the Page to switch into
+     */
     public void switchToPage(int index) {
         if(index < 0 || index >= m_Pages.size())
             return;
@@ -77,6 +87,11 @@ public class PageSwitcher {
         Logger.message("PageSwitcher", "Switched to page '" + m_IDToNameTable.get(index) + "'");
     }
 
+    /**
+     * Retrieves the index of a given Page using its name (set when calling {@link #registerPage(String, Page)})
+     * @param name The name of the Page to retrieve the index of
+     * @return If the provided {@code name} can be found, the index of the Page using that name. If not, -1
+     */
     public int getPageIndex(String name) {
         if(m_NameToIDTable.containsKey(name)) {
             return m_NameToIDTable.get(name);
