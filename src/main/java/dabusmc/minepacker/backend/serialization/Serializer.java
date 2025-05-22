@@ -3,8 +3,6 @@ package dabusmc.minepacker.backend.serialization;
 import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -52,14 +50,7 @@ public class Serializer {
             return;
         }
 
-        JSONParser parser = new JSONParser();
-        try {
-            JSONObject data = (JSONObject) parser.parse(file.getReader());
-            saveable.getLoadedData(data);
-            Logger.info("Serializer", "Loaded JSON Data from path '" + path + "'");
-        } catch (IOException | ParseException e) {
-            Logger.error("Serializer", e.toString());
-        }
+        saveable.getLoadedData(file.readIntoJson());
     }
 
 }

@@ -69,6 +69,7 @@ public class Mod {
         Forge,
         Quilt,
         NeoForge,
+        Vanilla,
         Unknown
     }
 
@@ -81,6 +82,8 @@ public class Mod {
             return Loader.Quilt;
         } else if(string.equalsIgnoreCase("neoforge")) {
             return Loader.NeoForge;
+        } else if(string.equalsIgnoreCase("vanilla")) {
+            return Loader.Vanilla;
         }
 
         return Loader.Unknown;
@@ -99,6 +102,9 @@ public class Mod {
             }
             case NeoForge -> {
                 return "NeoForge";
+            }
+            case Vanilla -> {
+                return "Vanilla";
             }
             default -> {
                 return "Unknown";

@@ -18,6 +18,9 @@ public class MinePackerRuntime {
     private ModApi m_ModApi = null;
     private Settings m_Settings;
 
+    private OS m_OS;
+    private SysArch m_SystemArch;
+
     private MinecraftGenerator m_MCGenerator;
 
     public MinePackerRuntime() {
@@ -31,6 +34,36 @@ public class MinePackerRuntime {
             m_MCGenerator = new MinecraftGenerator();
             m_Settings = new Settings();
             Serializer.load(m_Settings);
+
+            String os = System.getProperty("os.name");
+            if(os != null) {
+                if(os.contains("Windows") || os.contains("windows")) {
+                    m_OS = OS.Windows;
+                } else if(os.contains("Mac")) {
+                    m_OS = OS.Mac;
+                } else if(os.contains("Linux") || os.contains("linux")) {
+                    m_OS = OS.Linux;
+                } else {
+                    m_OS = OS.Unknown;
+                }
+            } else {
+                m_OS = OS.Unknown;
+            }
+
+            String arch = System.getProperty("os.arch");
+            if(arch != null) {
+                if(arch.contains("x86") || arch.contains("i386") || arch.contains("i486") || arch.contains("i586") || arch.contains("i686")) {
+                    m_SystemArch = SysArch.x86;
+                } else if(arch.contains("x86_64") || arch.contains("amd64")) {
+                    m_SystemArch = SysArch.x64;
+                } else if(arch.contains("aarch64")) {
+                    m_SystemArch = SysArch.arm64;
+                } else {
+                    m_SystemArch = SysArch.Unknown;
+                }
+            } else {
+                m_SystemArch = SysArch.Unknown;
+            }
 
             Logger.info("MinePackerRuntime", "Initialised Runtime");
         }
@@ -70,6 +103,50 @@ public class MinePackerRuntime {
 
     public Settings getSettings() {
         return m_Settings;
+    }
+
+    public OS getOS() {
+        return m_OS;
+    }
+
+    public SysArch getSystemArch() {
+        return m_SystemArch;
+    }
+
+    public enum OS {
+        Windows("windows"),
+        Mac("mac-os"),
+        Linux("linux"),
+        Unknown("unknown");
+
+        private final String m_Name;
+
+        OS(String name) {
+            m_Name = name;
+        }
+
+        @Override
+        public String toString() {
+            return m_Name;
+        }
+    }
+
+    public enum SysArch {
+        x64("x64"),
+        x86("x86"),
+        arm64("arm64"),
+        Unknown("unknown");
+
+        private final String m_Name;
+
+        SysArch(String name) {
+            m_Name = name;
+        }
+
+        @Override
+        public String toString() {
+            return m_Name;
+        }
     }
 
 }

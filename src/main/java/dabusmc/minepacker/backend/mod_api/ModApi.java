@@ -9,12 +9,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 public abstract class ModApi {
@@ -119,6 +123,16 @@ public abstract class ModApi {
         }
 
         return null;
+    }
+
+    public long downloadFromURL(String url, String fileName) {
+        try(InputStream in = URI.create(url).toURL().openStream()) {
+            return Files.copy(in, Paths.get(fileName));
+        } catch (IOException e) {
+            Logger.error("ModApi", e.toString());
+        }
+
+        return 0;
     }
 
     public abstract boolean modIDExists(String id);

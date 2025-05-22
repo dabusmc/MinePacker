@@ -1,8 +1,13 @@
 package dabusmc.minepacker.backend.data.projects;
 
+import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.MinecraftVersion;
+import dabusmc.minepacker.backend.data.Mod;
+import dabusmc.minepacker.backend.io.PackerFile;
+import dabusmc.minepacker.backend.serialization.ISaveable;
+import org.json.simple.JSONObject;
 
-public class Project {
+public class Project implements ISaveable {
 
     public static Project generateDefaultProject() {
         Project p = new Project();
@@ -15,6 +20,7 @@ public class Project {
     private String m_Name;
     private String m_Version;
     private MinecraftVersion m_MinecraftVersion;
+    private Mod.Loader m_Loader;
 
     public Project() {
 
@@ -32,6 +38,10 @@ public class Project {
         return m_MinecraftVersion;
     }
 
+    public Mod.Loader getLoader() {
+        return m_Loader;
+    }
+
     public void setName(String name) {
         m_Name = name;
     }
@@ -44,4 +54,29 @@ public class Project {
         m_MinecraftVersion = minecraftVersion;
     }
 
+    public void setLoader(Mod.Loader loader) {
+        m_Loader = loader;
+    }
+
+    @Override
+    public String getFileName() {
+        return PackerFile.convertNameToFileName(m_Name) + ".json";
+    }
+
+    @Override
+    public String getSaveDirectory() {
+        return PackerFile.combineFilePaths(MinePackerRuntime.s_Instance.getSettings().getProjectsDir(), PackerFile.convertNameToFileName(m_Name));
+    }
+
+    @Override
+    public JSONObject getSavableObject() {
+        JSONObject obj = new JSONObject();
+
+        return obj;
+    }
+
+    @Override
+    public void getLoadedData(JSONObject data) {
+
+    }
 }

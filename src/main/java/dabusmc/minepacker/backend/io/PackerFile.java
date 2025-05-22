@@ -1,6 +1,9 @@
 package dabusmc.minepacker.backend.io;
 
 import dabusmc.minepacker.backend.logging.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.URL;
@@ -8,6 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class PackerFile {
+
+    public static String convertNameToFileName(String name) {
+        String fn = name;
+        fn = fn.replaceAll(" ", "_");
+        fn = fn.toLowerCase();
+        return fn;
+    }
 
     public static URL getResource(String path) {
         return PackerFile.class.getResource(path);
@@ -26,6 +36,17 @@ public class PackerFile {
         if(!Files.exists(path)) {
             try {
                 Files.createDirectories(path);
+            } catch (IOException e) {
+                Logger.error("PackerFile", e.toString());
+            }
+        }
+    }
+
+    public static void deleteFileIfExists(String file) {
+        Path path = Path.of(file);
+        if(Files.exists(path)) {
+            try {
+                Files.delete(path);
             } catch (IOException e) {
                 Logger.error("PackerFile", e.toString());
             }
@@ -82,6 +103,18 @@ public class PackerFile {
         } catch (IOException e) {
             Logger.fatal("PackerFile", e.toString());
         }
+    }
+
+    public JSONObject readIntoJson() {
+        JSONParser parser = new JSONParser();
+
+        try {
+            return (JSONObject) parser.parse(getReader());
+        } catch (IOException | ParseException e) {
+            Logger.error("PackerFile", e.toString());
+        }
+
+        return null;
     }
 
     private void open(boolean overwrite) {

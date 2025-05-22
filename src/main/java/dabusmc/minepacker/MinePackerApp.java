@@ -1,6 +1,7 @@
 package dabusmc.minepacker;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
+import dabusmc.minepacker.backend.data.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.MinecraftGenerator;
 import dabusmc.minepacker.backend.data.projects.Project;
@@ -24,13 +25,14 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.constructModApi(ModApiType.Modrinth);
         MinePackerRuntime.s_Instance.setCurrentProject(Project.generateDefaultProject());
 
-        // Initialise Data
-        Logger.info("MinePackerApp",
-                MinePackerRuntime.s_Instance.getMCGenerator().getJsonPathForVersion(MinePackerRuntime.s_Instance.getCurrentProject().getMinecraftVersion()));
+        // Initialise Test Project
+        MinePackerRuntime.s_Instance.getCurrentProject().setName("Test Project");
+        MinePackerRuntime.s_Instance.getCurrentProject().setVersion("1.0.0");
+        MinePackerRuntime.s_Instance.getCurrentProject().setMinecraftVersion(MinecraftVersion.MC_1_21_5);
+        MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Vanilla);
 
-        // Test
-        Mod jei = MinePackerRuntime.s_Instance.getModApi().getModFromID("u6dRKJwZ");
-        Logger.info("MinePackerApp", jei);
+        // Generate Test Instance
+        MinePackerRuntime.s_Instance.getMCGenerator().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
     }
 
     @Override
