@@ -3,6 +3,7 @@ package dabusmc.minepacker;
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.Project;
+import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
@@ -14,6 +15,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
 
 public class MinePackerApp extends Application {
 
@@ -24,6 +30,16 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.setLogLevel(LogLevel.MESSAGE);
         MinePackerRuntime.s_Instance.constructModApi(ModApiType.Modrinth);
         MinePackerRuntime.s_Instance.setCurrentProject(Project.generateDefaultProject());
+
+        PackerFile temp = new PackerFile(PackerFile.getResource("/dabusmc/minepacker/version_manifest_v2.json"));
+
+        JSONParser parser = new JSONParser();
+        try {
+            JSONObject data = (JSONObject)parser.parse(temp.getReader());
+            Logger.info("MinePackerApp", data.get("latest"));
+        } catch (IOException | ParseException e) {
+            Logger.error("MinePackerApp", e.toString());
+        }
 
         // Test
         Mod jei = MinePackerRuntime.s_Instance.getModApi().getModFromID("u6dRKJwZ");
