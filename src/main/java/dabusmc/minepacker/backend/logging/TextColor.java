@@ -75,17 +75,15 @@ public enum TextColor {
     CYAN_BACKGROUND_BRIGHT("\033[0;106m"),      // CYAN
     WHITE_BACKGROUND_BRIGHT("\033[0;107m");     // WHITE
 
-    private final String code;
+    private final String m_Code;
 
-    TextColor(String code)
-    {
-        this.code = code;
+    TextColor(String code) {
+        this.m_Code = code;
     }
 
     @Override
-    public String toString()
-    {
-        return code;
+    public String toString() {
+        return m_Code;
     }
 
 }
