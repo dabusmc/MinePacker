@@ -1,12 +1,13 @@
 package dabusmc.minepacker.backend;
 
+import dabusmc.minepacker.backend.data.Settings;
+import dabusmc.minepacker.backend.data.projects.MinecraftGenerator;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApi;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
-
-import java.net.ProtocolException;
+import dabusmc.minepacker.backend.serialization.Serializer;
 
 public class MinePackerRuntime {
 
@@ -15,12 +16,23 @@ public class MinePackerRuntime {
     private LogLevel m_LogLevel;
     private Project m_CurrentProject;
     private ModApi m_ModApi = null;
+    private Settings m_Settings;
+
+    private MinecraftGenerator m_MCGenerator;
 
     public MinePackerRuntime() {
         if (s_Instance != null) {
             Logger.error("MinePackerRuntime", "There should only ever be one instance of MinePackerRuntime");
         }  else {
             s_Instance = this;
+
+            setLogLevel(LogLevel.MESSAGE);
+
+            m_MCGenerator = new MinecraftGenerator();
+            m_Settings = new Settings();
+            Serializer.load(m_Settings);
+
+            Logger.info("MinePackerRuntime", "Initialised Runtime");
         }
     }
 
@@ -50,6 +62,14 @@ public class MinePackerRuntime {
 
     public void setLogLevel(LogLevel level) {
         m_LogLevel = level;
+    }
+
+    public MinecraftGenerator getMCGenerator() {
+        return m_MCGenerator;
+    }
+
+    public Settings getSettings() {
+        return m_Settings;
     }
 
 }

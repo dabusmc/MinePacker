@@ -13,20 +13,11 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 public class MinecraftGenerator {
-
-    public static MinecraftGenerator s_Instance;
-
     private HashMap<String, String> m_JsonFileVersionMap;
 
     public MinecraftGenerator() {
-        if(s_Instance != null) {
-            Logger.error("MinecraftGenerator", "There should only ever be one instance of MinecraftGenerator");
-        } else {
-            m_JsonFileVersionMap = new HashMap<>();
-            generateVersionMap();
-
-            s_Instance = this;
-        }
+        m_JsonFileVersionMap = new HashMap<>();
+        generateVersionMap();
     }
 
     public String getJsonPathForVersion(MinecraftVersion version) {
@@ -39,7 +30,7 @@ public class MinecraftGenerator {
     }
 
     private void generateVersionMap() {
-        PackerFile versionManifestFile = new PackerFile(PackerFile.getResource("/dabusmc/minepacker/version_manifest_v2.json"));
+        PackerFile versionManifestFile = new PackerFile(PackerFile.getResource("/dabusmc/minepacker/version_manifest_v2.json"), false);
 
         JSONParser parser = new JSONParser();
         try {

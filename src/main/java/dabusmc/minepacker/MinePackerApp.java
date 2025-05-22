@@ -7,6 +7,7 @@ import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
+import dabusmc.minepacker.backend.serialization.Serializer;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.SecondTestPage;
 import dabusmc.minepacker.frontend.page.TestPage;
@@ -24,8 +25,8 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.setCurrentProject(Project.generateDefaultProject());
 
         // Initialise Data
-        new MinecraftGenerator();
-        Logger.info("MinePackerApp", MinecraftGenerator.s_Instance.getJsonPathForVersion(MinePackerRuntime.s_Instance.getCurrentProject().getMinecraftVersion()));
+        Logger.info("MinePackerApp",
+                MinePackerRuntime.s_Instance.getMCGenerator().getJsonPathForVersion(MinePackerRuntime.s_Instance.getCurrentProject().getMinecraftVersion()));
 
         // Test
         Mod jei = MinePackerRuntime.s_Instance.getModApi().getModFromID("u6dRKJwZ");
@@ -42,6 +43,11 @@ public class MinePackerApp extends Application {
         new PageSwitcher(stage);
         PageSwitcher.s_Instance.registerPage("test", new TestPage());
         PageSwitcher.s_Instance.registerPage("second_test", new SecondTestPage());
+    }
+
+    @Override
+    public void stop() {
+        Serializer.save(MinePackerRuntime.s_Instance.getSettings());
     }
 
     public static void main(String[] args) {
