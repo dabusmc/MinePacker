@@ -18,7 +18,7 @@ public class MinePackerRuntime {
 
     public MinePackerRuntime() {
         if (s_Instance != null) {
-            Logger.error("MinePacker Runtime", "There should only ever be one instance of MinePackerRuntime");
+            Logger.error("MinePackerRuntime", "There should only ever be one instance of MinePackerRuntime");
         }  else {
             s_Instance = this;
         }
