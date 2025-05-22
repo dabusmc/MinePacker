@@ -1,9 +1,7 @@
 package dabusmc.minepacker.backend.mod_api.apis;
 
 import dabusmc.minepacker.backend.data.Mod;
-import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApi;
-import dabusmc.minepacker.backend.mod_api.ModApiType;
 import org.json.simple.JSONObject;
 
 import java.net.http.HttpResponse;

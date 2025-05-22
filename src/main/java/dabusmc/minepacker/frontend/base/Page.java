@@ -1,8 +1,6 @@
 package dabusmc.minepacker.frontend.base;
 
-import dabusmc.minepacker.backend.logging.Logger;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 
 public class Page extends AbstractComponentList {
 

@@ -2,9 +2,7 @@ package dabusmc.minepacker.frontend.page;
 
 import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
-import dabusmc.minepacker.frontend.base.ScreenRatio;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
