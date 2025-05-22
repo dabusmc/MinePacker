@@ -4,6 +4,14 @@ import dabusmc.minepacker.backend.data.MinecraftVersion;
 
 public class Project {
 
+    public static Project generateDefaultProject() {
+        Project p = new Project();
+        p.setName("Default Project");
+        p.setVersion("1.0.0");
+        p.setMinecraftVersion(MinecraftVersion.MC_1_21_5);
+        return p;
+    }
+
     private String m_Name;
     private String m_Version;
     private MinecraftVersion m_MinecraftVersion;
