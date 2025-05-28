@@ -55,7 +55,7 @@ public class PackerFile {
 
     public static void deleteFolderIfExists(String dir) {
         Path path = Path.of(dir);
-        if(!Files.exists(path)) {
+        if(Files.exists(path)) {
             File[] contents = path.toFile().listFiles();
             if (contents != null) {
                 for (File f : contents) {
@@ -64,8 +64,7 @@ public class PackerFile {
                     }
                 }
             }
-            boolean test = path.toFile().delete();
-            Logger.info("PackerFile", test);
+            path.toFile().delete();
         }
     }
 
