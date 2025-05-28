@@ -30,18 +30,6 @@ public class MinecraftGenerator {
         generateJREMap();
     }
 
-    public boolean canRunMinecraft(MinePackerRuntime.OS os, MinePackerRuntime.SysArch arch) {
-        if(os == MinePackerRuntime.OS.Unknown || arch == MinePackerRuntime.SysArch.Unknown)
-            return false;
-
-        if(os == MinePackerRuntime.OS.Windows) {
-            return arch == MinePackerRuntime.SysArch.x64 || arch == MinePackerRuntime.SysArch.x86 || arch == MinePackerRuntime.SysArch.arm64;
-        }
-
-        // TODO: Make sure other operating systems are supported
-        return false;
-    }
-
     public void generateInstance(Project prj) {
         // Check PC Configuration
         if(!canRunMinecraft(MinePackerRuntime.s_Instance.getOS(), MinePackerRuntime.s_Instance.getSystemArch())) {
@@ -69,6 +57,7 @@ public class MinecraftGenerator {
         generateVersion(instance);
         gatherArguments(instance);
         generateAssets(instance);
+        generateLibraries(instance);
         generateJRE(instance);
         generateJREFiles(instance);
 
@@ -123,7 +112,7 @@ public class MinecraftGenerator {
                 JSONObject arg = (JSONObject) argObj;
                 JSONArray rules = (JSONArray) arg.get("rules");
 
-                boolean allow = false;
+                boolean allow = true;
                 for(Object ruleObj : rules) {
                     JSONObject rule = (JSONObject) ruleObj;
                     boolean allowBase = rule.get("action").toString().equals("allow");
@@ -132,15 +121,15 @@ public class MinecraftGenerator {
                     JSONObject os = (JSONObject) rule.get("os");
                     if(os.containsKey("name")) {
                         String osName = os.get("name").toString();
-                        if(MinePackerRuntime.s_Instance.getOS().toString().equals(osName) == allowBase) {
-                            allow = true;
-                        } else if((MinePackerRuntime.s_Instance.getOS().equals(MinePackerRuntime.OS.Mac) && osName.equals("osx")) == allowBase) {
-                            allow = true;
+                        if(MinePackerRuntime.s_Instance.getOS().toString().equals(osName) != allowBase) {
+                            allow = false;
+                        } else if((MinePackerRuntime.s_Instance.getOS().equals(MinePackerRuntime.OS.Mac) && osName.equals("osx")) != allowBase) {
+                            allow = false;
                         }
                     } else if(os.containsKey("arch")) {
                         String arch = os.get("arch").toString();
-                        if(MinePackerRuntime.s_Instance.getSystemArch().toString().equals(arch) == allowBase) {
-                            allow = true;
+                        if(MinePackerRuntime.s_Instance.getSystemArch().toString().equals(arch) != allowBase) {
+                            allow = false;
                         }
                     }
                 }
@@ -255,7 +244,69 @@ public class MinecraftGenerator {
         }
     }
 
+    private void generateLibraries(MinecraftInstance instance) {
+        JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
+
+        JSONArray libsJSON = (JSONArray) versionFileData.get("libraries");
+        for(Object libObj : libsJSON) {
+            JSONObject libJSON = (JSONObject) libObj;
+            JSONObject libDownloadJSON = (JSONObject) ((JSONObject)libJSON.get("downloads")).get("artifact");
+
+            String outputFile = PackerFile.combineFilePaths(instance.FileSystem.getLibrariesDirectory(), libDownloadJSON.get("path").toString());
+            String outputDir = PackerFile.getDirectoryFromAbsolutePath(outputFile);
+            String fileURL = libDownloadJSON.get("url").toString();
+
+            if(libJSON.containsKey("rules")) {
+                JSONArray rules = (JSONArray) libJSON.get("rules");
+                boolean allow = true;
+
+                for(Object ruleObj : rules) {
+                    JSONObject ruleJSON = (JSONObject) ruleObj;
+                    boolean allowBase = ruleJSON.get("action").toString().equals("allow");
+
+                    // NOTE: All of the rules for the libraries are based on the OS
+                    JSONObject os = (JSONObject) ruleJSON.get("os");
+                    if(os.containsKey("name")) {
+                        String osName = os.get("name").toString();
+
+                        if(osName.equals("osx")) {
+                            if(!MinePackerRuntime.s_Instance.getOS().equals(MinePackerRuntime.OS.Mac)) {
+                                allow = false;
+                            }
+                        } else {
+                            if (MinePackerRuntime.s_Instance.getOS().toString().equals(osName) != allowBase) {
+                                allow = false;
+                            }
+                        }
+                    }
+                }
+
+                if(allow) {
+                    PackerFile.createFolderIfNotExist(outputDir);
+                    MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+                }
+            } else {
+                PackerFile.createFolderIfNotExist(outputDir);
+                MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+            }
+        }
+
+        Logger.message("MinecraftGenerator", "Generated library files for " + instance.InstanceProject.getName());
+    }
+
     // NOTE: Utility functions
+
+    public boolean canRunMinecraft(MinePackerRuntime.OS os, MinePackerRuntime.SysArch arch) {
+        if(os == MinePackerRuntime.OS.Unknown || arch == MinePackerRuntime.SysArch.Unknown)
+            return false;
+
+        if(os == MinePackerRuntime.OS.Windows) {
+            return arch == MinePackerRuntime.SysArch.x64 || arch == MinePackerRuntime.SysArch.x86 || arch == MinePackerRuntime.SysArch.arm64;
+        }
+
+        // TODO: Make sure other operating systems are supported
+        return false;
+    }
 
     private String[] downloadCorrectMinecraftVersion(String parentFolder, MinecraftVersion version) {
         String versionsFolder = PackerFile.combineFilePaths(parentFolder, "versions");

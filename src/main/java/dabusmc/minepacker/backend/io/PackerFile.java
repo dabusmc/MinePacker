@@ -68,6 +68,12 @@ public class PackerFile {
         }
     }
 
+    public static String getDirectoryFromAbsolutePath(String absPath) {
+        File file = new File(absPath);
+        String directory = file.getParent();
+        return directory;
+    }
+
     private String m_Path;
     private File m_File;
     private BufferedWriter m_Writer;

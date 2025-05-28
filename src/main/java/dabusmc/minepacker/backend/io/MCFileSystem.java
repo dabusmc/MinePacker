@@ -9,6 +9,7 @@ public class MCFileSystem {
     private String m_VersionsDirectory;
     private String m_VersionDirectory;
     private String m_AssetsDirectory;
+    private String m_LibrariesDirectory;
     private String m_BinDirectory;
     private String m_JREDirectory;
 
@@ -19,6 +20,7 @@ public class MCFileSystem {
         m_BaseDirectory = PackerFile.combineFilePaths(prj.getSaveDirectory(), "instance");
         m_VersionsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "versions");
         m_AssetsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "assets");
+        m_LibrariesDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "libraries");
         m_BinDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "bin");
         m_JREDirectory = PackerFile.combineFilePaths(m_BinDirectory, "jre");
     }
@@ -27,6 +29,7 @@ public class MCFileSystem {
         PackerFile.createFolderIfNotExist(m_BaseDirectory);
         PackerFile.createFolderIfNotExist(m_VersionsDirectory);
         PackerFile.createFolderIfNotExist(m_AssetsDirectory);
+        PackerFile.createFolderIfNotExist(m_LibrariesDirectory);
         PackerFile.createFolderIfNotExist(m_BinDirectory);
         PackerFile.createFolderIfNotExist(m_JREDirectory);
     }
@@ -49,6 +52,10 @@ public class MCFileSystem {
 
     public String getAssetsDirectory() {
         return m_AssetsDirectory;
+    }
+
+    public String getLibrariesDirectory() {
+        return m_LibrariesDirectory;
     }
 
     public String getBinDirectory() {
