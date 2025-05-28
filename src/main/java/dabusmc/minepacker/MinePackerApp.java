@@ -30,7 +30,7 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Vanilla);
 
         // Generate Test Instance
-        MinePackerRuntime.s_Instance.getMCGenerator().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
     }
 
     @Override

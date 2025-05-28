@@ -1,7 +1,8 @@
 package dabusmc.minepacker.backend;
 
 import dabusmc.minepacker.backend.data.Settings;
-import dabusmc.minepacker.backend.data.projects.MinecraftGenerator;
+import dabusmc.minepacker.backend.data.projects.instances.InstanceManager;
+import dabusmc.minepacker.backend.data.projects.instances.MinecraftGenerator;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
@@ -21,7 +22,7 @@ public class MinePackerRuntime {
     private OS m_OS;
     private SysArch m_SystemArch;
 
-    private MinecraftGenerator m_MCGenerator;
+    private InstanceManager m_InstanceManager;
 
     public MinePackerRuntime() {
         if (s_Instance != null) {
@@ -31,7 +32,7 @@ public class MinePackerRuntime {
 
             setLogLevel(LogLevel.MESSAGE);
 
-            m_MCGenerator = new MinecraftGenerator();
+            m_InstanceManager = new InstanceManager();
             m_Settings = new Settings();
             Serializer.load(m_Settings);
 
@@ -97,8 +98,8 @@ public class MinePackerRuntime {
         m_LogLevel = level;
     }
 
-    public MinecraftGenerator getMCGenerator() {
-        return m_MCGenerator;
+    public InstanceManager getInstanceManager() {
+        return m_InstanceManager;
     }
 
     public Settings getSettings() {
