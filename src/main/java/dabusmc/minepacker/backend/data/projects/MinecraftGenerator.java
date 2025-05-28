@@ -8,6 +8,7 @@ import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApi;
 import dabusmc.minepacker.backend.util.ListPair;
+import dabusmc.minepacker.backend.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -54,12 +55,16 @@ public class MinecraftGenerator {
         instance.FileSystem.generateFileStructure();
 
         // Generate Instance
+        Logger.info("MinecraftGenerator", "Generating Minecraft instance...");
+
         generateVersion(instance);
         gatherArguments(instance);
+        determineMainClass(instance);
         generateAssets(instance);
+        generateLogging(instance);
         generateLibraries(instance);
         generateJRE(instance);
-        generateJREFiles(instance);
+        //generateJREFiles(instance);
 
         // Finish
         Logger.info("MinecraftGenerator", "Generated Minecraft Instance for project '" + prj.getName() + "'");
@@ -211,37 +216,56 @@ public class MinecraftGenerator {
         JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
         String assetsID = versionFileData.get("assets").toString();
 
+        // Download asset index
         JSONObject assetIndex = (JSONObject) versionFileData.get("assetIndex");
         if(assetsID.equals(assetIndex.get("id").toString())) {
-            String assetsJSONPath = PackerFile.combineFilePaths(instance.FileSystem.getAssetsDirectory(), assetsID + ".json");
+            String assetsJSONPath = PackerFile.combineFilePaths(instance.FileSystem.getIndexesDirectory(), assetsID + ".json");
 
             String assetsJSONUrl = assetIndex.get("url").toString();
             MinePackerRuntime.s_Instance.getModApi().downloadFromURL(assetsJSONUrl, assetsJSONPath);
 
-            PackerFile assetsJSONFile = new PackerFile(assetsJSONPath, false);
-            JSONObject assetsJSON = assetsJSONFile.readIntoJson();
+            // Download asset objects
+            JSONObject assetObjects = (JSONObject) new PackerFile(assetsJSONPath, false).readIntoJson(true).get("objects");
 
-            JSONObject objectsJSON = (JSONObject) assetsJSON.get("objects");
-            int objectsCount = objectsJSON.size();
+            int objectsCount = assetObjects.size();
             int objectsDownloadedCount = 0;
-            for(int i = 0; i < objectsCount; i++) {
-                String key = objectsJSON.keySet().toArray()[i].toString();
 
-                String absolutePath = PackerFile.combineFilePaths(instance.FileSystem.getAssetsDirectory(), key);
+            for(int i = 0; i < objectsCount; i++) {
+                String key = assetObjects.keySet().toArray()[i].toString();
+                String hash = ((JSONObject) assetObjects.get(key)).get("hash").toString();
+
+                String absolutePath = PackerFile.combineFilePaths(instance.FileSystem.getObjectsDirectory(), PackerFile.combineFilePaths(hash.substring(0, 2), hash));
                 String folderToCreate = absolutePath.substring(0, absolutePath.lastIndexOf('/'));
                 PackerFile.createFolderIfNotExist(folderToCreate);
 
-                String hash = ((JSONObject) objectsJSON.get(key)).get("hash").toString();
                 String url = MINECRAFT_RESOURCES_URL + "/" + hash.substring(0, 2) + "/" + hash;
 
-                // NOTE: This is commented out for testing as downloading all ~4000 assets on a single thread takes a LONG time
+                // NOTE: This is commented out for testing as downloading all ~4000 objects on a single thread takes a LONG time
                 //MinePackerRuntime.s_Instance.getModApi().downloadFromURL(url, absolutePath);
 
                 objectsDownloadedCount += 1;
+                //Logger.message("MinecraftGenerator", "Downloaded " + objectsDownloadedCount + " / " + objectsCount + " objects");
             }
-
-            Logger.message("MinecraftGenerator", "Generated asset files for " + instance.InstanceProject.getName());
         }
+
+        Logger.message("MinecraftGenerator", "Generated asset files for " + instance.InstanceProject.getName());
+    }
+
+    private void generateLogging(MinecraftInstance instance) {
+        JSONObject loggingJSON = (JSONObject) new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true).get("logging");
+        JSONObject clientLoggingJSON = (JSONObject) loggingJSON.get("client");
+        JSONObject clientLoggingFileJSON = (JSONObject) clientLoggingJSON.get("file");
+
+        String fileName = clientLoggingFileJSON.get("id").toString();
+        String filePath = PackerFile.combineFilePaths(instance.FileSystem.getLogConfigsDirectory(), fileName);
+        String url = clientLoggingFileJSON.get("url").toString();
+
+        String jvmArg = StringUtils.setVariableInString(clientLoggingJSON.get("argument").toString(), "path", "\"" + filePath + "\"");
+        instance.Arguments.addToSecond(jvmArg);
+
+        MinePackerRuntime.s_Instance.getModApi().downloadFromURL(url, filePath);
+
+        Logger.message("MinecraftGenerator", "Generated logging file for " + instance.InstanceProject.getName());
     }
 
     private void generateLibraries(MinecraftInstance instance) {
@@ -283,15 +307,21 @@ public class MinecraftGenerator {
 
                 if(allow) {
                     PackerFile.createFolderIfNotExist(outputDir);
-                    MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+                    //MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
                 }
             } else {
                 PackerFile.createFolderIfNotExist(outputDir);
-                MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+                //MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
             }
         }
 
         Logger.message("MinecraftGenerator", "Generated library files for " + instance.InstanceProject.getName());
+    }
+
+    public void determineMainClass(MinecraftInstance instance) {
+        JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
+        instance.MainClass = versionFileData.get("mainClass").toString();
+        Logger.message("MinecraftGenerator", "Determined main class for " + instance.InstanceProject.getName());
     }
 
     // NOTE: Utility functions

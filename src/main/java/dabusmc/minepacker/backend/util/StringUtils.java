@@ -1,0 +1,19 @@
+package dabusmc.minepacker.backend.util;
+
+import dabusmc.minepacker.backend.logging.Logger;
+
+public class StringUtils {
+
+    public static String setVariableInString(String str, String variableName, String value) {
+        String toReplace = "${";
+        toReplace += variableName;
+        toReplace += "}";
+
+        if(str.contains(toReplace)) {
+            return str.replace(toReplace, value);
+        }
+
+        return str;
+    }
+
+}

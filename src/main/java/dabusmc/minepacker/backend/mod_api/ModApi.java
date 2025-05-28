@@ -127,7 +127,7 @@ public abstract class ModApi {
 
     public long downloadFromURL(String url, String fileName) {
         try(InputStream in = URI.create(url).toURL().openStream()) {
-            Logger.message("ModApi", "Downloaded file at '" + url + "'");
+            //Logger.message("ModApi", "Downloaded file at '" + url + "'");
             return Files.copy(in, Paths.get(fileName));
         } catch (IOException e) {
             Logger.error("ModApi", e.toString());
