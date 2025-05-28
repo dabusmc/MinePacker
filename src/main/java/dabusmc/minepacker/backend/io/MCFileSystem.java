@@ -9,44 +9,47 @@ public class MCFileSystem {
     private String m_VersionsDirectory;
     private String m_VersionDirectory;
     private String m_LibrariesDirectory;
+    private String m_BinDirectory;
 
     private String m_AssetsDirectory;
     private String m_IndexesDirectory;
     private String m_LogConfigsDirectory;
     private String m_ObjectsDirectory;
 
-    private String m_BinDirectory;
-    private String m_JREDirectory;
+    private String m_RuntimesDirectory;
+    private String m_MinecraftRuntimesDirectory;
 
     private String m_VersionJSONFilePath;
-    private String m_JREJSONFilePath;
+    private String m_ClientJarFilePath;
 
     public void setProject(Project prj) {
         m_BaseDirectory = PackerFile.combineFilePaths(prj.getSaveDirectory(), "instance");
         m_VersionsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "versions");
         m_LibrariesDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "libraries");
+        m_BinDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "bin");
 
         m_AssetsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "assets");
         m_IndexesDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "indexes");
         m_LogConfigsDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "log_configs");
         m_ObjectsDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "objects");
 
-        m_BinDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "bin");
-        m_JREDirectory = PackerFile.combineFilePaths(m_BinDirectory, "jre");
+        m_RuntimesDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "runtimes");
+        m_MinecraftRuntimesDirectory = PackerFile.combineFilePaths(m_RuntimesDirectory, "minecraft");
     }
 
     public void generateFileStructure() {
         PackerFile.createFolderIfNotExist(m_BaseDirectory);
         PackerFile.createFolderIfNotExist(m_VersionsDirectory);
         PackerFile.createFolderIfNotExist(m_LibrariesDirectory);
+        PackerFile.createFolderIfNotExist(m_BinDirectory);
 
         PackerFile.createFolderIfNotExist(m_AssetsDirectory);
         PackerFile.createFolderIfNotExist(m_IndexesDirectory);
         PackerFile.createFolderIfNotExist(m_LogConfigsDirectory);
         PackerFile.createFolderIfNotExist(m_ObjectsDirectory);
 
-        PackerFile.createFolderIfNotExist(m_BinDirectory);
-        PackerFile.createFolderIfNotExist(m_JREDirectory);
+        PackerFile.createFolderIfNotExist(m_RuntimesDirectory);
+        PackerFile.createFolderIfNotExist(m_MinecraftRuntimesDirectory);
     }
 
     public String getBaseDirectory() {
@@ -69,6 +72,10 @@ public class MCFileSystem {
         return m_LibrariesDirectory;
     }
 
+    public String getBinDirectory() {
+        return m_BinDirectory;
+    }
+
     public String getAssetsDirectory() {
         return m_AssetsDirectory;
     }
@@ -85,12 +92,12 @@ public class MCFileSystem {
         return m_ObjectsDirectory;
     }
 
-    public String getBinDirectory() {
-        return m_BinDirectory;
+    public String getRuntimesDirectory() {
+        return m_RuntimesDirectory;
     }
 
-    public String getJREDirectory() {
-        return m_JREDirectory;
+    public String getMinecraftRuntimesDirectory() {
+        return m_MinecraftRuntimesDirectory;
     }
 
 
@@ -103,12 +110,12 @@ public class MCFileSystem {
         m_VersionJSONFilePath = filePath;
     }
 
-    public String getJREJSONFilePath() {
-        return m_JREJSONFilePath;
+    public String getClientJarFilePath() {
+        return m_ClientJarFilePath;
     }
 
-    public void setJREJSONFilePath(String filePath) {
-        m_JREJSONFilePath = filePath;
+    public void setClientJarFilePath(String filePath) {
+        m_ClientJarFilePath = filePath;
     }
 
 }

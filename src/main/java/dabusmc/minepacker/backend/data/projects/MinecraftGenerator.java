@@ -58,13 +58,20 @@ public class MinecraftGenerator {
         Logger.info("MinecraftGenerator", "Generating Minecraft instance...");
 
         generateVersion(instance);
+
         gatherArguments(instance);
+
         determineMainClass(instance);
+
+        generateMinecraft(instance);
+
         generateAssets(instance);
+
         generateLogging(instance);
+
         generateLibraries(instance);
-        generateJRE(instance);
-        //generateJREFiles(instance);
+
+        generateRuntimes(instance);
 
         // Finish
         Logger.info("MinecraftGenerator", "Generated Minecraft Instance for project '" + prj.getName() + "'");
@@ -151,67 +158,6 @@ public class MinecraftGenerator {
         Logger.message("MinecraftGenerator", "Gathered correct arguments for " + instance.InstanceProject.getName());
     }
 
-    private void generateJRE(MinecraftInstance instance) {
-        JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
-
-        String jreJavaVersionComponent = ((JSONObject) versionFileData.get("javaVersion")).get("component").toString();
-        int jreJavaVersionMajor = Integer.parseInt(((JSONObject) versionFileData.get("javaVersion")).get("majorVersion").toString());
-
-        JSONObject jreData = getCorrectJREDataForSystem(MinePackerRuntime.s_Instance.getOS(), MinePackerRuntime.s_Instance.getSystemArch());
-        if(jreData == null) {
-            Logger.error("MinecraftGenerator", "Failed to generate Minecraft instance for " + instance.InstanceProject.getName() + ": Architecture not supported");
-            return;
-        }
-
-        JSONObject jreComponent = (JSONObject) ((JSONArray) jreData.get(jreJavaVersionComponent)).getFirst();
-        String jreManifestPath = downloadJREVersionManifest(instance.FileSystem.getVersionDirectory(), jreComponent);
-
-        if(jreManifestPath.isEmpty()) {
-            Logger.error("MinecraftGenerator", "Failed to generate Minecraft instance for " + instance.InstanceProject.getName() + ": Failed to find JRE Manifest");
-            return;
-        }
-
-        instance.FileSystem.setJREJSONFilePath(jreManifestPath);
-        Logger.message("MinecraftGenerator", "Generated correct JRE manifest file for " + instance.InstanceProject.getName());
-    }
-
-    private void generateJREFiles(MinecraftInstance instance) {
-        PackerFile jreManifestFile = new PackerFile(instance.FileSystem.getJREJSONFilePath(), false);
-        JSONObject jreManifestData = (JSONObject) jreManifestFile.readIntoJson().get("files");
-
-        // NOTE: Splitting up the creation of directories and files ensures that all directories are created before downloading any files
-        List<String> directories = new ArrayList<>();
-        List<JSONObject> files = new ArrayList<>();
-        for(int i = 0; i < jreManifestData.size(); i++) {
-            String key = jreManifestData.keySet().toArray()[i].toString();
-            JSONObject data = (JSONObject) jreManifestData.get(key);
-
-            if(data.get("type").toString().equals("directory")) {
-                directories.add(key);
-            } else {
-                data.put("name", key);
-                files.add(data);
-            }
-        }
-
-        for(String dir : directories) {
-            String absDir = PackerFile.combineFilePaths(instance.FileSystem.getJREDirectory(), dir);
-            PackerFile.createFolderIfNotExist(absDir);
-        }
-
-        for(JSONObject file : files) {
-            JSONObject downloads = (JSONObject) file.get("downloads");
-            String downloadURL = ((JSONObject) downloads.get("raw")).get("url").toString();
-            String finalFilePath = PackerFile.combineFilePaths(instance.FileSystem.getJREDirectory(), file.get("name").toString());
-
-            MinePackerRuntime.s_Instance.getModApi().downloadFromURL(downloadURL, finalFilePath);
-        }
-
-        jreManifestFile.cleanup();
-
-        Logger.message("MinecraftGenerator", "Generated JRE files for " + instance.InstanceProject.getName());
-    }
-
     private void generateAssets(MinecraftInstance instance) {
         JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
         String assetsID = versionFileData.get("assets").toString();
@@ -241,10 +187,10 @@ public class MinecraftGenerator {
                 String url = MINECRAFT_RESOURCES_URL + "/" + hash.substring(0, 2) + "/" + hash;
 
                 // NOTE: This is commented out for testing as downloading all ~4000 objects on a single thread takes a LONG time
-                //MinePackerRuntime.s_Instance.getModApi().downloadFromURL(url, absolutePath);
+                MinePackerRuntime.s_Instance.getModApi().downloadFromURL(url, absolutePath);
 
                 objectsDownloadedCount += 1;
-                //Logger.message("MinecraftGenerator", "Downloaded " + objectsDownloadedCount + " / " + objectsCount + " objects");
+                Logger.message("MinecraftGenerator", "Downloaded " + objectsDownloadedCount + " / " + objectsCount + " asset objects");
             }
         }
 
@@ -272,6 +218,10 @@ public class MinecraftGenerator {
         JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
 
         JSONArray libsJSON = (JSONArray) versionFileData.get("libraries");
+
+        int libraryCount = libsJSON.size();
+        int librariesDownloaded = 0;
+
         for(Object libObj : libsJSON) {
             JSONObject libJSON = (JSONObject) libObj;
             JSONObject libDownloadJSON = (JSONObject) ((JSONObject)libJSON.get("downloads")).get("artifact");
@@ -307,21 +257,97 @@ public class MinecraftGenerator {
 
                 if(allow) {
                     PackerFile.createFolderIfNotExist(outputDir);
-                    //MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+                    MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+
+                    librariesDownloaded += 1;
+                    Logger.message("MinecraftGenerator", "Downloaded " + librariesDownloaded + " / " + libraryCount + " libraries");
                 }
             } else {
                 PackerFile.createFolderIfNotExist(outputDir);
-                //MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+                MinePackerRuntime.s_Instance.getModApi().downloadFromURL(fileURL, outputFile);
+
+                librariesDownloaded += 1;
+                Logger.message("MinecraftGenerator", "Downloaded " + librariesDownloaded + " / " + libraryCount + " libraries");
             }
         }
 
         Logger.message("MinecraftGenerator", "Generated library files for " + instance.InstanceProject.getName());
     }
 
-    public void determineMainClass(MinecraftInstance instance) {
+    private void determineMainClass(MinecraftInstance instance) {
         JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
         instance.MainClass = versionFileData.get("mainClass").toString();
         Logger.message("MinecraftGenerator", "Determined main class for " + instance.InstanceProject.getName());
+    }
+
+    private void generateMinecraft(MinecraftInstance instance) {
+        JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
+        String clientJarRelPath = "net/minecraft/client/" + instance.InstanceProject.getMinecraftVersion().toString();
+        String clientJarFilePath = PackerFile.combineFilePaths(instance.FileSystem.getLibrariesDirectory(), clientJarRelPath);
+        PackerFile.createFolderIfNotExist(clientJarFilePath);
+        clientJarFilePath += "/client.jar";
+
+        String url = ((JSONObject) ((JSONObject) versionFileData.get("downloads")).get("client")).get("url").toString();
+        MinePackerRuntime.s_Instance.getModApi().downloadFromURL(url, clientJarFilePath);
+
+        instance.FileSystem.setClientJarFilePath(clientJarFilePath);
+
+        Logger.message("MinecraftGenerator", "Generated Minecraft Jar for " + instance.InstanceProject.getName());
+    }
+
+    private void generateRuntimes(MinecraftInstance instance) {
+        // Gather correct JRE Manifest file
+        JSONObject versionFileData = new PackerFile(instance.FileSystem.getVersionJSONFilePath(), false).readIntoJson(true);
+
+        String jreJavaVersionComponent = ((JSONObject) versionFileData.get("javaVersion")).get("component").toString();
+        int jreJavaVersionMajor = Integer.parseInt(((JSONObject) versionFileData.get("javaVersion")).get("majorVersion").toString());
+
+        JSONObject jreData = getCorrectJREDataForSystem(MinePackerRuntime.s_Instance.getOS(), MinePackerRuntime.s_Instance.getSystemArch());
+        if(jreData == null) {
+            Logger.error("MinecraftGenerator", "Failed to generate Minecraft instance for " + instance.InstanceProject.getName() + ": Architecture not supported");
+            return;
+        }
+
+        JSONObject jreComponent = (JSONObject) ((JSONArray) jreData.get(jreJavaVersionComponent)).getFirst();
+        String jreManifestPath = downloadJREVersionManifest(instance.FileSystem.getVersionDirectory(), jreComponent);
+
+        if(jreManifestPath.isEmpty()) {
+            Logger.error("MinecraftGenerator", "Failed to generate Minecraft instance for " + instance.InstanceProject.getName() + ": Failed to find JRE Manifest");
+            return;
+        }
+
+        // Install Runtimes
+        JSONObject jreManifestData = (JSONObject) new PackerFile(jreManifestPath, false).readIntoJson(true).get("files");
+
+        // NOTE: Splitting up the creation of directories and files ensures that all directories are created before downloading any files
+        List<String> directories = new ArrayList<>();
+        List<JSONObject> files = new ArrayList<>();
+        for(int i = 0; i < jreManifestData.size(); i++) {
+            String key = jreManifestData.keySet().toArray()[i].toString();
+            JSONObject data = (JSONObject) jreManifestData.get(key);
+
+            if(data.get("type").toString().equals("directory")) {
+                directories.add(key);
+            } else {
+                data.put("name", key);
+                files.add(data);
+            }
+        }
+
+        for(String dir : directories) {
+            String absDir = PackerFile.combineFilePaths(instance.FileSystem.getMinecraftRuntimesDirectory(), dir);
+            PackerFile.createFolderIfNotExist(absDir);
+        }
+
+        for(JSONObject file : files) {
+            JSONObject downloads = (JSONObject) file.get("downloads");
+            String downloadURL = ((JSONObject) downloads.get("raw")).get("url").toString();
+            String finalFilePath = PackerFile.combineFilePaths(instance.FileSystem.getMinecraftRuntimesDirectory(), file.get("name").toString());
+
+            MinePackerRuntime.s_Instance.getModApi().downloadFromURL(downloadURL, finalFilePath);
+        }
+
+        Logger.message("MinecraftGenerator", "Generated Runtimes for " + instance.InstanceProject.getName());
     }
 
     // NOTE: Utility functions
