@@ -4,7 +4,7 @@ import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.io.PackerFile;
-import dabusmc.minepacker.backend.serialization.ISaveable;
+import dabusmc.minepacker.backend.io.serialization.ISaveable;
 import org.json.simple.JSONObject;
 
 public class Project implements ISaveable {

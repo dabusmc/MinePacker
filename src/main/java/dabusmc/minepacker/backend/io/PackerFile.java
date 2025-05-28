@@ -132,6 +132,23 @@ public class PackerFile {
         return null;
     }
 
+    public JSONObject readIntoJson(boolean close) {
+        JSONParser parser = new JSONParser();
+
+        try {
+            JSONObject ret = (JSONObject) parser.parse(getReader());
+            if(close) {
+                cleanup();
+            }
+            return ret;
+        } catch (IOException | ParseException e) {
+            Logger.error("PackerFile", e.toString());
+        }
+
+        return null;
+    }
+
+
     private void open(boolean overwrite) {
         m_File = new File(m_Path);
 

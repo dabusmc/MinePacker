@@ -1,4 +1,4 @@
-package dabusmc.minepacker.backend.serialization;
+package dabusmc.minepacker.backend.io.serialization;
 
 import org.json.simple.JSONObject;
 

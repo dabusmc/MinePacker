@@ -6,7 +6,7 @@ import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
-import dabusmc.minepacker.backend.serialization.Serializer;
+import dabusmc.minepacker.backend.io.serialization.Serializer;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.SecondTestPage;
 import dabusmc.minepacker.frontend.page.TestPage;

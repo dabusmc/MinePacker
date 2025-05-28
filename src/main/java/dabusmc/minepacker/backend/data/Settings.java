@@ -1,7 +1,7 @@
 package dabusmc.minepacker.backend.data;
 
 import dabusmc.minepacker.backend.io.PackerFile;
-import dabusmc.minepacker.backend.serialization.ISaveable;
+import dabusmc.minepacker.backend.io.serialization.ISaveable;
 import org.json.simple.JSONObject;
 
 public class Settings implements ISaveable {

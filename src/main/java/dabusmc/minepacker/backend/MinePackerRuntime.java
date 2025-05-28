@@ -7,7 +7,7 @@ import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.mod_api.ModApi;
 import dabusmc.minepacker.backend.mod_api.ModApiType;
-import dabusmc.minepacker.backend.serialization.Serializer;
+import dabusmc.minepacker.backend.io.serialization.Serializer;
 
 public class MinePackerRuntime {
 

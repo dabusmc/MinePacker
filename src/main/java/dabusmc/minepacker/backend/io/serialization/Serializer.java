@@ -1,4 +1,4 @@
-package dabusmc.minepacker.backend.serialization;
+package dabusmc.minepacker.backend.io.serialization;
 
 import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.logging.Logger;
