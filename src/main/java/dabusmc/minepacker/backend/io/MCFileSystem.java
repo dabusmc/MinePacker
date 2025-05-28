@@ -20,7 +20,7 @@ public class MCFileSystem {
         m_VersionsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "versions");
         m_AssetsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "assets");
         m_BinDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "bin");
-        m_JREDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "jre");
+        m_JREDirectory = PackerFile.combineFilePaths(m_BinDirectory, "jre");
     }
 
     public void generateFileStructure() {
