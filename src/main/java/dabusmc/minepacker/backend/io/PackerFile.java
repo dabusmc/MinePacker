@@ -53,6 +53,22 @@ public class PackerFile {
         }
     }
 
+    public static void deleteFolderIfExists(String dir) {
+        Path path = Path.of(dir);
+        if(!Files.exists(path)) {
+            File[] contents = path.toFile().listFiles();
+            if (contents != null) {
+                for (File f : contents) {
+                    if (!Files.isSymbolicLink(f.toPath())) {
+                        deleteFolderIfExists(f.toPath().toAbsolutePath().toString());
+                    }
+                }
+            }
+            boolean test = path.toFile().delete();
+            Logger.info("PackerFile", test);
+        }
+    }
+
     private String m_Path;
     private File m_File;
     private BufferedWriter m_Writer;
