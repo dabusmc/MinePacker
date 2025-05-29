@@ -5,7 +5,7 @@ import java.util.*;
 public class Analytics {
 
     private static HashMap<String, Calendar> s_TimeTracker;
-    private static HashMap<String, Long> s_PerformanceMap;
+    private static HashMap<String, AnalyticProfileCollection> s_PerformanceMap;
 
     public static void init() {
         s_TimeTracker = new HashMap<>();
@@ -13,6 +13,9 @@ public class Analytics {
     }
 
     public static void begin(String name) {
+        if(s_TimeTracker.containsKey(name))
+            return;
+
         Calendar current = Calendar.getInstance(TimeZone.getDefault());
         s_TimeTracker.put(name, current);
     }
@@ -22,9 +25,25 @@ public class Analytics {
             Calendar startTime = s_TimeTracker.get(name);
             Calendar endTime = Calendar.getInstance(TimeZone.getDefault());
 
-            String performanceName = name + "_" + UUID.randomUUID();
-            long msTaken = endTime.getTimeInMillis() - startTime.getTimeInMillis();
-            s_PerformanceMap.put(performanceName, msTaken);
+            AnalyticProfile profile = new AnalyticProfile();
+            profile.Name = String.valueOf(UUID.randomUUID());
+            profile.StartDateAndTime = startTime;
+            profile.EndDateAndTime = endTime;
+            profile.TimeTakenMs = endTime.getTimeInMillis() - startTime.getTimeInMillis();
+
+            if(!s_PerformanceMap.containsKey(name)) {
+                AnalyticProfileCollection collection = new AnalyticProfileCollection();
+                collection.Name = name;
+                collection.AverageTime = profile.TimeTakenMs;
+                collection.Profiles = new ArrayList<>();
+                collection.Profiles.add(profile);
+                s_PerformanceMap.put(name, collection);
+            } else {
+                s_PerformanceMap.get(name).AverageTime += profile.TimeTakenMs;
+                s_PerformanceMap.get(name).Profiles.add(profile);
+            }
+
+            s_TimeTracker.remove(name);
         }
     }
 
@@ -34,7 +53,7 @@ public class Analytics {
         }
     }
 
-    public static HashMap<String, Long> getPerformanceMap() {
+    public static HashMap<String, AnalyticProfileCollection> getPerformanceMap() {
         return s_PerformanceMap;
     }
 

@@ -1,5 +1,6 @@
 package dabusmc.minepacker.backend.http;
 
+import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.http.apis.ModrinthApi;
@@ -73,6 +74,8 @@ public abstract class ModApi {
 
     public HttpResponse<String> get(String url, boolean statusCodeErrorCheck, String... headers)
     {
+        Analytics.begin("GETRequest");
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofMinutes(1)) // TODO: Check if this is a suitable duration to wait (might need lowering)
@@ -95,6 +98,8 @@ public abstract class ModApi {
             Logger.fatal("ModApi", e.toString());
         }
 
+        Analytics.end("GETRequest");
+
         return null;
     }
 
@@ -103,6 +108,8 @@ public abstract class ModApi {
     }
 
     public HttpResponse<String> post(String url, Object data, boolean statusCodeErrorCheck, String... headers) {
+        Analytics.begin("POSTRequest");
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofMinutes(1)) // TODO: Check if this is a suitable duration to wait (might need lowering)
@@ -124,6 +131,8 @@ public abstract class ModApi {
             m_Connected = false;
             Logger.fatal("ModApi", e.toString());
         }
+
+        Analytics.end("POSTRequest");
 
         return null;
     }
@@ -161,13 +170,17 @@ public abstract class ModApi {
     }
 
     public long downloadFromURL(String url, String fileName) {
+        Analytics.begin("DownloadFile");
+
         try(InputStream in = URI.create(url).toURL().openStream()) {
             //Logger.message("ModApi", "Downloaded file at '" + url + "'");
+            Analytics.end("DownloadFile");
             return Files.copy(in, Paths.get(fileName));
         } catch (IOException e) {
             Logger.error("ModApi", e.toString());
         }
 
+        Analytics.end("DownloadFile");
         return 0;
     }
 

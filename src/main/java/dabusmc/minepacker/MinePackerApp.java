@@ -43,10 +43,9 @@ public class MinePackerApp extends Application {
         //MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
 
         // Generate Test Instance
-        MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        //MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        MinePackerRuntime.s_Instance.getInstanceManager().loadInstance(MinePackerRuntime.s_Instance.getCurrentProject());
         MinePackerRuntime.s_Instance.getInstanceManager().launchInstance(MinePackerRuntime.s_Instance.getCurrentProject());
-
-        Logger.info("MinePackerApp", MinecraftVersion.valueOf("MC_1_21_4_rc3"));
     }
 
     @Override

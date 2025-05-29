@@ -1,0 +1,3 @@
+This document is essentially a way to keep track of all the random ideas that pop into my head that haven't been properly thought out, but are just useful or cool either for development or the app itself
+
+ISaveable specifically for autosaving. Would include both automatically saving when the application end, automatically loading when the application starts, and a customisable interval at which the object would save itself
