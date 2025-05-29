@@ -6,8 +6,10 @@ import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Page;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class TestPage extends Page {
 
@@ -19,19 +21,23 @@ public class TestPage extends Page {
 
     @Override
     public void initComponents() {
+        VBox vBox = new VBox(5.0);
+
+        Label username = new Label("Username: ");
         Button test = new Button("Welcome to MinePacker!");
 
         test.setOnAction(event -> {
-            AbstractAccount current = MinePackerRuntime.s_Instance.getAuthenticationManager().getWorkingAccount();
+            AbstractAccount current = MinePackerRuntime.s_Instance.getAuthenticationManager().getCurrentAccount();
             if(current != null) {
                 MicrosoftAccount mcAcc = (MicrosoftAccount) current;
-                Logger.info("TestPage", "Microsoft Login Successful: " + mcAcc.AccessToken);
+                username.setText("Username: " + mcAcc.AccountProfile.Name);
             } else {
-                Logger.error("TestPage", "Microsoft Login Failed!");
+                username.setText("Username: Unknown!");
             }
         });
 
-        m_Root.getChildren().add(test);
+        vBox.getChildren().addAll(username, test);
+        m_Root.getChildren().addAll(vBox);
     }
 
     @Override

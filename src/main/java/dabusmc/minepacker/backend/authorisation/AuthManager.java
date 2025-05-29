@@ -8,16 +8,31 @@ import net.freeutils.httpserver.HTTPServer;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthManager {
-
-    private AbstractAccount m_WorkingAccount;
 
     private final HTTPServer m_Server = new HTTPServer(MicrosoftAccount.MICROSOFT_LOGIN_REDIRECT_PORT);
     private final HTTPServer.VirtualHost m_Host = m_Server.getVirtualHost(null);
 
+    private String m_LoginMethod = "Unknown";
+
+    private List<AbstractAccount> m_Accounts;
+    private int m_CurrentSelectedAccount;
+
     public AuthManager() {
-        m_WorkingAccount = null;
+        m_Accounts = new ArrayList<>();
+        m_CurrentSelectedAccount = -1;
+    }
+
+    public AbstractAccount getCurrentAccount() {
+        if(m_CurrentSelectedAccount == -1) {
+            Logger.error("AuthManager", "No accounts are currently logged in!");
+            return null;
+        }
+
+        return m_Accounts.get(m_CurrentSelectedAccount);
     }
 
     public void attemptMicrosoftLogin() {
@@ -27,10 +42,6 @@ public class AuthManager {
         } catch (IOException e) {
             Logger.error("AuthManager", e.toString());
         }
-    }
-
-    public AbstractAccount getWorkingAccount() {
-        return m_WorkingAccount;
     }
 
     private void startServer() throws IOException {
@@ -51,11 +62,8 @@ public class AuthManager {
                 return 0;
             }
 
-            String loginMethod = "Browser";
-            //Logger.info("AuthManager", req.getParams().get("code"));
             try {
-                m_WorkingAccount = new MicrosoftAccount();
-                m_WorkingAccount.LoginMethod = loginMethod;
+                m_LoginMethod = "Browser";
                 acquireAccessToken(req.getParams().get("code"));
             } catch (Exception e) {
                 Logger.fatal("AuthManager", e.toString());
@@ -83,7 +91,6 @@ public class AuthManager {
 
     private void acquireAccessToken(String code) throws Exception {
         OAuthTokenResponse response = MicrosoftAccount.getAccessTokenFromCode(code);
-        m_WorkingAccount.AccessToken = response;
         acquireXBLToken(response);
     }
 
@@ -94,7 +101,6 @@ public class AuthManager {
 
     private void acquireXsts(OAuthTokenResponse tokenResponse, String xblToken) throws Exception {
         XBLAuthResponse xstsAuthResponse = MicrosoftAccount.getXstsToken(xblToken);
-        ((MicrosoftAccount) m_WorkingAccount).XstsToken = xstsAuthResponse;
         acquireMinecraftToken(tokenResponse, xstsAuthResponse);
     }
 
@@ -113,6 +119,27 @@ public class AuthManager {
                 && entitlements.Items.stream().anyMatch(i -> i.Name.equalsIgnoreCase("game_minecraft")))) {
             throw new Exception("Account does not own Minecraft");
         }
+
+        Profile profile = MicrosoftAccount.getMCProfile(loginResponse.AccessToken);
+        if (profile == null) {
+            throw new Exception("Failed to get Minecraft profile");
+        }
+
+        addMicrosoftAccount(tokenResponse, xstsAuthResponse, loginResponse, profile);
+        Logger.info("AuthManager", "Added Minecraft Account with name: " + profile.Name);
+    }
+
+    private void addMicrosoftAccount(OAuthTokenResponse tokenResponse, XBLAuthResponse xstsAuthResponse, LoginResponse loginResponse, Profile profile) {
+        if(m_Accounts.isEmpty()) {
+            m_CurrentSelectedAccount = 0;
+        }
+
+        MicrosoftAccount account = new MicrosoftAccount();
+        account.AccessToken = tokenResponse;
+        account.XstsToken = xstsAuthResponse;
+        account.AttemptedLoginResponse = loginResponse;
+        account.AccountProfile = profile;
+        m_Accounts.add(account);
     }
 
 }

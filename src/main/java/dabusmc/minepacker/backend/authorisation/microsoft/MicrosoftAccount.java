@@ -36,6 +36,11 @@ public class MicrosoftAccount extends AbstractAccount {
     public static final String MICROSOFT_MINECRAFT_ENTITLEMENTS_URL = "https://api.minecraftservices.com/entitlements/license";
 
     public XBLAuthResponse XstsToken;
+    public LoginResponse AttemptedLoginResponse;
+
+    public MicrosoftAccount() {
+        super(AccountType.Microsoft);
+    }
 
     public static OAuthTokenResponse getAccessTokenFromCode(String code) {
         String urlEncodedArgs = StringUtils.generateURLEncodedString(
@@ -88,21 +93,12 @@ public class MicrosoftAccount extends AbstractAccount {
     }
 
     public static LoginResponse loginToMinecraft(String xstsToken) {
-        // Map<Object, Object> data = new HashMap<>();
-        //        data.put("xtoken", xstsToken);
-        //        data.put("platform", "PC_LAUNCHER");
-        //
-        //        LoginResponse loginResponse = NetworkClient.post(Constants.MICROSOFT_MINECRAFT_LOGIN_URL,
-        //            Headers.of("Content-Type", "application/json", "Accept", "application/json"),
-        //            RequestBody.create(Gsons.DEFAULT.toJson(data), MediaType.get("application/json; charset=utf-8")),
-        //            LoginResponse.class);
-
         JSONObject obj = new JSONObject();
         obj.put("identityToken", xstsToken);
         obj.put("ensureLegacyEnabled", true);
 
         // NOTE: While waiting for Mojang to allow this product to access this API, we can just use a temporary key that is related to a user
-        // To fill this key out, follow this guide: https://kqzz.github.io/mc-bearer-token/
+        // To fill this key out, follow this guide: https://kqzz.github.io/mc-bearer-token/. This needs to be done every 24 hours.
         String key = "\"\"";
         String tempResponse = "{\"username\": \"830491e6-50e9-e9ed-6e8a-7041f4fef585\", \"roles\": [], \"access_token\": " + key + ", \"token_type\": \"Bearer\", \"expires_in\": 86400}";
 
@@ -118,6 +114,14 @@ public class MicrosoftAccount extends AbstractAccount {
                 "Authorization", "Bearer " + accessToken, "Content-Type", "application/json", "Accept",
                 "application/json");
         return Entitlements.generateFromJSONString(response.body());
+    }
+
+    public static Profile getMCProfile(String accessToken) {
+        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().get(
+                MICROSOFT_MINECRAFT_PROFILE_URL,
+                true,
+                "Authorization", "Bearer " + accessToken);
+        return Profile.generateFromJSONString(response.body());
     }
 
 }
