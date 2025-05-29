@@ -3,6 +3,7 @@ package dabusmc.minepacker;
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.analytics.PerformanceProfile;
+import dabusmc.minepacker.backend.authorisation.AuthManager;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
@@ -40,7 +41,7 @@ public class MinePackerApp extends Application {
         MinecraftVersionConverter.init();
 
         // Test Authentication
-        //MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
+        MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
 
         // Generate Test Instance
         //MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
@@ -62,6 +63,8 @@ public class MinePackerApp extends Application {
 
     @Override
     public void stop() {
+        MinePackerRuntime.s_Instance.getAuthenticationManager().endAuthServer();
+
         Serializer.save(MinePackerRuntime.s_Instance.getSettings());
         Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
         MinePackerRuntime.s_Instance.getInstanceManager().saveInstances();

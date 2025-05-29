@@ -1,5 +1,6 @@
 package dabusmc.minepacker.backend.authorisation;
 
+import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.authorisation.microsoft.*;
 import dabusmc.minepacker.backend.io.Browser;
 import dabusmc.minepacker.backend.logging.Logger;
@@ -46,6 +47,8 @@ public class AuthManager {
 
     private void startServer() throws IOException {
         m_Host.addContext("/", (req, res) -> {
+            Analytics.begin("LoginWithMicrosoft");
+
             if (req.getParams().containsKey("error")) {
                 res.getHeaders().add("Content-Type", "text/plain");
                 res.send(500, "Error logging in.");
@@ -85,7 +88,7 @@ public class AuthManager {
     }
 
     // FIXME: The server isn't properly stopping and the application continues to run even when this function has been called and the GUI has been closed
-    private void endAuthServer() {
+    public void endAuthServer() {
         m_Server.stop();
     }
 
@@ -140,6 +143,8 @@ public class AuthManager {
         account.AttemptedLoginResponse = loginResponse;
         account.AccountProfile = profile;
         m_Accounts.add(account);
+
+        Analytics.end("LoginWithMicrosoft");
     }
 
 }

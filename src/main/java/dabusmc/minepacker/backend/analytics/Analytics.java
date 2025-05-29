@@ -48,7 +48,8 @@ public class Analytics {
     }
 
     public static void endAll() {
-        for(String name : s_TimeTracker.keySet()) {
+        String[] names = s_TimeTracker.keySet().toArray(new String[0]);
+        for(String name : names) {
             end(name);
         }
     }
