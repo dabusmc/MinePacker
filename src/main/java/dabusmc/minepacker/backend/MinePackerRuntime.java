@@ -1,13 +1,13 @@
 package dabusmc.minepacker.backend;
 
+import dabusmc.minepacker.backend.authorisation.AuthManager;
 import dabusmc.minepacker.backend.data.Settings;
 import dabusmc.minepacker.backend.data.projects.instances.InstanceManager;
-import dabusmc.minepacker.backend.data.projects.instances.MinecraftGenerator;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.logging.Logger;
-import dabusmc.minepacker.backend.mod_api.ModApi;
-import dabusmc.minepacker.backend.mod_api.ModApiType;
+import dabusmc.minepacker.backend.http.ModApi;
+import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
 
 public class MinePackerRuntime {
@@ -23,6 +23,7 @@ public class MinePackerRuntime {
     private SysArch m_SystemArch;
 
     private InstanceManager m_InstanceManager;
+    private AuthManager m_AuthenticationManager;
 
     public MinePackerRuntime() {
         if (s_Instance != null) {
@@ -33,6 +34,7 @@ public class MinePackerRuntime {
             setLogLevel(LogLevel.MESSAGE);
 
             m_InstanceManager = new InstanceManager();
+            m_AuthenticationManager = new AuthManager();
             m_Settings = new Settings();
             Serializer.load(m_Settings);
 
@@ -101,6 +103,8 @@ public class MinePackerRuntime {
     public InstanceManager getInstanceManager() {
         return m_InstanceManager;
     }
+
+    public AuthManager getAuthenticationManager() { return m_AuthenticationManager; }
 
     public Settings getSettings() {
         return m_Settings;

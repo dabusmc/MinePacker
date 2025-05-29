@@ -31,6 +31,7 @@ public class Logger {
 
     public static void fatal(String owner, Object message) {
         log(owner, message, LogLevel.FATAL, TextColor.RED_UNDERLINED);
+        System.exit(-1);
     }
 
 

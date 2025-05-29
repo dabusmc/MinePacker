@@ -1,5 +1,9 @@
 package dabusmc.minepacker.frontend.page;
 
+import dabusmc.minepacker.backend.MinePackerRuntime;
+import dabusmc.minepacker.backend.authorisation.AbstractAccount;
+import dabusmc.minepacker.backend.authorisation.MicrosoftAccount;
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import javafx.scene.control.Button;
@@ -19,7 +23,13 @@ public class TestPage extends Page {
         Button test = new Button("Welcome to MinePacker!");
 
         test.setOnAction(event -> {
-            PageSwitcher.s_Instance.switchToPage(PageSwitcher.s_Instance.getPageIndex("second_test"));
+            AbstractAccount current = MinePackerRuntime.s_Instance.getAuthenticationManager().getCurrentLoggedInAccount();
+            if(current != null) {
+                MicrosoftAccount mcAcc = (MicrosoftAccount) current;
+                Logger.info("TestPage", "Microsoft Login Successful: " + mcAcc.AccessToken);
+            } else {
+                Logger.error("TestPage", "Microsoft Login Failed!");
+            }
         });
 
         m_Root.getChildren().add(test);

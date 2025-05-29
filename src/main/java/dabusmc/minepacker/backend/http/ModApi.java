@@ -1,8 +1,8 @@
-package dabusmc.minepacker.backend.mod_api;
+package dabusmc.minepacker.backend.http;
 
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.logging.Logger;
-import dabusmc.minepacker.backend.mod_api.apis.ModrinthApi;
+import dabusmc.minepacker.backend.http.apis.ModrinthApi;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -10,7 +10,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -87,6 +86,37 @@ public abstract class ModApi {
             m_Connected = true;
             return response;
         } catch (IOException | InterruptedException e) {
+            m_Connected = false;
+            Logger.fatal("ModApi", e.toString());
+        }
+
+        return null;
+    }
+
+    public HttpResponse<String> post(String url, JSONObject data, boolean statusCodeErrorCheck) {
+        return post(url, data, statusCodeErrorCheck, "Content-Type", "application/json");
+    }
+
+    public HttpResponse<String> post(String url, Object data, boolean statusCodeErrorCheck, String... headers) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .timeout(Duration.ofMinutes(1)) // TODO: Check if this is a suitable duration to wait (might need lowering)
+                .headers(headers)
+                .POST(HttpRequest.BodyPublishers.ofString(data.toString()))
+                .build();
+
+        try {
+            HttpResponse<String> response = m_Client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (statusCodeErrorCheck && response.statusCode() != 200) {
+                Logger.fatal("ModApi", "Request threw status code " + response.statusCode());
+                return null;
+            }
+
+            m_Connected = true;
+            return response;
+        } catch (IOException | InterruptedException e) {
+            m_Connected = false;
             Logger.fatal("ModApi", e.toString());
         }
 

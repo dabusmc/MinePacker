@@ -5,7 +5,7 @@ import dabusmc.minepacker.backend.data.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
-import dabusmc.minepacker.backend.mod_api.ModApiType;
+import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.SecondTestPage;
@@ -29,8 +29,12 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.getCurrentProject().setMinecraftVersion(MinecraftVersion.MC_1_21_5);
         MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Vanilla);
 
+        // Test Authentication
+        MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
+
         // Generate Test Instance
-        MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        //MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        //MinePackerRuntime.s_Instance.getInstanceManager().launchInstance(MinePackerRuntime.s_Instance.getCurrentProject());
     }
 
     @Override
