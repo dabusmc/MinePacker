@@ -18,11 +18,12 @@ public class LoginResponse {
 
             LoginResponse response = new LoginResponse();
 
-            for(Object key : obj.keySet()) {
-                Logger.info("LoginResponse", key);
-            }
+            response.Username = obj.get("username").toString();
+            response.AccessToken = obj.get("access_token").toString();
+            response.TokenType = obj.get("token_type").toString();
+            response.ExpiresIn = Integer.valueOf(obj.get("expires_in").toString());
 
-            return null;
+            return response;
         } catch (ParseException e) {
             Logger.fatal("LoginResponse", e.toString());
         }

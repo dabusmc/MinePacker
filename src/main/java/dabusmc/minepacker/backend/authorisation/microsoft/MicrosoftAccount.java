@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MicrosoftAccount extends AbstractAccount {
 
@@ -108,6 +109,15 @@ public class MicrosoftAccount extends AbstractAccount {
 //        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_MINECRAFT_LOGIN_URL,
 //                obj.toJSONString(), true, "Content-Type", "application/json", "Accept", "application/json");
         return LoginResponse.generateFromJSONString(tempResponse);
+    }
+
+    public static Entitlements getEntitlements(String accessToken) {
+        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().get(
+                String.format("%s?requestId=%s", MICROSOFT_MINECRAFT_ENTITLEMENTS_URL, UUID.randomUUID()),
+                true,
+                "Authorization", "Bearer " + accessToken, "Content-Type", "application/json", "Accept",
+                "application/json");
+        return Entitlements.generateFromJSONString(response.body());
     }
 
 }

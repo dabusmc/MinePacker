@@ -68,10 +68,15 @@ public abstract class ModApi {
 
     public HttpResponse<String> get(String url, boolean statusCodeErrorCheck)
     {
+        return get(url, statusCodeErrorCheck, "Content-Type", "application/json");
+    }
+
+    public HttpResponse<String> get(String url, boolean statusCodeErrorCheck, String... headers)
+    {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .timeout(Duration.ofMinutes(1)) // TODO: Check if this is a suitable duration to wait (might need lowering)
-                .header("Content-Type", "application/json") // FIXME: User-Agent header needs to be changed to be compliant with Modrinth standards
+                .headers(headers) // FIXME: User-Agent header needs to be changed to be compliant with Modrinth standards
                 .GET()
                 .build();
 

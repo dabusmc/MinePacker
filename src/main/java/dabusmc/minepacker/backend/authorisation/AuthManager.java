@@ -1,9 +1,6 @@
 package dabusmc.minepacker.backend.authorisation;
 
-import dabusmc.minepacker.backend.authorisation.microsoft.LoginResponse;
-import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
-import dabusmc.minepacker.backend.authorisation.microsoft.OAuthTokenResponse;
-import dabusmc.minepacker.backend.authorisation.microsoft.XBLAuthResponse;
+import dabusmc.minepacker.backend.authorisation.microsoft.*;
 import dabusmc.minepacker.backend.io.Browser;
 import dabusmc.minepacker.backend.logging.Logger;
 import net.freeutils.httpserver.HTTPServer;
@@ -106,10 +103,15 @@ public class AuthManager {
         String xblXsts = xstsAuthResponse.Token;
 
         LoginResponse loginResponse = MicrosoftAccount.loginToMinecraft("XBL3.0 x=" + xblUhs + ";" + xblXsts);
-        if(loginResponse != null) {
-            Logger.info("AuthManager", loginResponse.Username);
-        } else {
-            Logger.error("AuthManager", "Failed to login to Minecraft");
+        if(loginResponse == null) {
+            throw new Exception("Failed to login to Minecraft");
+        }
+
+        Entitlements entitlements = MicrosoftAccount.getEntitlements(loginResponse.AccessToken);
+
+        if (!(entitlements.Items.stream().anyMatch(i -> i.Name.equalsIgnoreCase("product_minecraft"))
+                && entitlements.Items.stream().anyMatch(i -> i.Name.equalsIgnoreCase("game_minecraft")))) {
+            throw new Exception("Account does not own Minecraft");
         }
     }
 
