@@ -49,7 +49,7 @@ public class XBLAuthResponse {
 
             return response;
         } catch (ParseException | java.text.ParseException e) {
-            Logger.fatal("OAuthTokenResponse", e.toString());
+            Logger.fatal("XBLAuthResponse", e.toString());
         }
 
         return null;

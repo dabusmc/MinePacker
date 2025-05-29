@@ -1,5 +1,6 @@
 package dabusmc.minepacker.backend.authorisation;
 
+import dabusmc.minepacker.backend.authorisation.microsoft.LoginResponse;
 import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
 import dabusmc.minepacker.backend.authorisation.microsoft.OAuthTokenResponse;
 import dabusmc.minepacker.backend.authorisation.microsoft.XBLAuthResponse;
@@ -91,10 +92,24 @@ public class AuthManager {
 
     private void acquireXBLToken(OAuthTokenResponse tokenResponse) throws Exception {
         XBLAuthResponse response = MicrosoftAccount.getXBLToken(tokenResponse.AccessToken);
-        if(response != null) {
-            Logger.info("AuthManager", response.Token);
+        acquireXsts(tokenResponse, response.Token);
+    }
+
+    private void acquireXsts(OAuthTokenResponse tokenResponse, String xblToken) throws Exception {
+        XBLAuthResponse xstsAuthResponse = MicrosoftAccount.getXstsToken(xblToken);
+        ((MicrosoftAccount) m_WorkingAccount).XstsToken = xstsAuthResponse;
+        acquireMinecraftToken(tokenResponse, xstsAuthResponse);
+    }
+
+    private void acquireMinecraftToken(OAuthTokenResponse tokenResponse, XBLAuthResponse xstsAuthResponse) throws Exception {
+        String xblUhs = xstsAuthResponse.DisplayClaims.XUI.getFirst().UHS;
+        String xblXsts = xstsAuthResponse.Token;
+
+        LoginResponse loginResponse = MicrosoftAccount.loginToMinecraft("XBL3.0 x=" + xblUhs + ";" + xblXsts);
+        if(loginResponse != null) {
+            Logger.info("AuthManager", loginResponse.Username);
         } else {
-            Logger.error("AuthManager", "Failed to generate Xbox Live Token");
+            Logger.error("AuthManager", "Failed to login to Minecraft");
         }
     }
 

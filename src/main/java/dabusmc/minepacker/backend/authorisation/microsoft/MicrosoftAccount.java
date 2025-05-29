@@ -5,6 +5,7 @@ import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.authorisation.AbstractAccount;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.util.StringUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.net.http.HttpResponse;
@@ -29,11 +30,11 @@ public class MicrosoftAccount extends AbstractAccount {
     public static final String MICROSOFT_AUTH_TOKEN_URL = "https://login.microsoftonline.com/consumers/oauth2/v2.0/token";
     public static final String MICROSOFT_XBL_AUTH_TOKEN_URL = "https://user.auth.xboxlive.com/user/authenticate";
     public static final String MICROSOFT_XSTS_AUTH_TOKEN_URL = "https://xsts.auth.xboxlive.com/xsts/authorize";
-    public static final String MICROSOFT_MINECRAFT_LOGIN_URL = "https://api.minecraftservices.com/launcher/login";
+    public static final String MICROSOFT_MINECRAFT_LOGIN_URL = "https://api.minecraftservices.com/authentication/login_with_xbox";
     public static final String MICROSOFT_MINECRAFT_PROFILE_URL = "https://api.minecraftservices.com/minecraft/profile";
     public static final String MICROSOFT_MINECRAFT_ENTITLEMENTS_URL = "https://api.minecraftservices.com/entitlements/license";
 
-
+    public XBLAuthResponse XstsToken;
 
     public static OAuthTokenResponse getAccessTokenFromCode(String code) {
         String urlEncodedArgs = StringUtils.generateURLEncodedString(
@@ -64,6 +65,49 @@ public class MicrosoftAccount extends AbstractAccount {
                 obj.toJSONString(), true, "Content-Type", "application/json", "Accept", "application/json", "x-xbl-contract-version",
                 "1");
         return XBLAuthResponse.generateFromJSONString(response.body());
+    }
+
+    public static XBLAuthResponse getXstsToken(String xblToken) {
+        JSONObject properties = new JSONObject();
+        properties.put("SandboxId", "RETAIL");
+
+        JSONArray userTokens = new JSONArray();
+        userTokens.add(xblToken);
+        properties.put("UserTokens", userTokens);
+
+        JSONObject obj = new JSONObject();
+        obj.put("Properties", properties);
+        obj.put("RelyingParty", "rp://api.minecraftservices.com/");
+        obj.put("TokenType", "JWT");
+
+        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_XSTS_AUTH_TOKEN_URL,
+                obj.toJSONString(), true, "Content-Type", "application/json", "Accept", "application/json", "x-xbl-contract-version",
+                "1");
+        return XBLAuthResponse.generateFromJSONString(response.body());
+    }
+
+    public static LoginResponse loginToMinecraft(String xstsToken) {
+        // Map<Object, Object> data = new HashMap<>();
+        //        data.put("xtoken", xstsToken);
+        //        data.put("platform", "PC_LAUNCHER");
+        //
+        //        LoginResponse loginResponse = NetworkClient.post(Constants.MICROSOFT_MINECRAFT_LOGIN_URL,
+        //            Headers.of("Content-Type", "application/json", "Accept", "application/json"),
+        //            RequestBody.create(Gsons.DEFAULT.toJson(data), MediaType.get("application/json; charset=utf-8")),
+        //            LoginResponse.class);
+
+        JSONObject obj = new JSONObject();
+        obj.put("identityToken", xstsToken);
+        obj.put("ensureLegacyEnabled", true);
+
+        // NOTE: While waiting for Mojang to allow this product to access this API, we can just use a temporary key that is related to a user
+        // To fill this key out, follow this guide: https://kqzz.github.io/mc-bearer-token/
+        String key = "\"\"";
+        String tempResponse = "{\"username\": \"830491e6-50e9-e9ed-6e8a-7041f4fef585\", \"roles\": [], \"access_token\": " + key + ", \"token_type\": \"Bearer\", \"expires_in\": 86400}";
+
+//        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_MINECRAFT_LOGIN_URL,
+//                obj.toJSONString(), true, "Content-Type", "application/json", "Accept", "application/json");
+        return LoginResponse.generateFromJSONString(tempResponse);
     }
 
 }
