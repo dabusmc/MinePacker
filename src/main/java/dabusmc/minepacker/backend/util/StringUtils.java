@@ -16,4 +16,20 @@ public class StringUtils {
         return str;
     }
 
+    public static String generateURLEncodedString(String... strings) {
+        StringBuilder out = new StringBuilder();
+        int i = 0;
+        for(String str : strings) {
+            out.append(str);
+            if((i + 1) % 2 == 0) {
+                out.append("&");
+            } else {
+                out.append("=");
+            }
+            i += 1;
+        }
+        out.deleteCharAt(out.toString().length() - 1);
+        return out.toString();
+    }
+
 }

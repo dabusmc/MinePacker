@@ -1,5 +1,7 @@
 package dabusmc.minepacker.backend.authorisation;
 
+import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
+import dabusmc.minepacker.backend.authorisation.microsoft.OAuthTokenResponse;
 import dabusmc.minepacker.backend.io.Browser;
 import dabusmc.minepacker.backend.logging.Logger;
 import net.freeutils.httpserver.HTTPServer;
@@ -10,13 +12,13 @@ import java.nio.charset.StandardCharsets;
 
 public class AuthManager {
 
-    private AbstractAccount m_CurrentAccountLoggedIn;
+    private AbstractAccount m_WorkingAccount;
 
     private final HTTPServer m_Server = new HTTPServer(MicrosoftAccount.MICROSOFT_LOGIN_REDIRECT_PORT);
     private final HTTPServer.VirtualHost m_Host = m_Server.getVirtualHost(null);
 
     public AuthManager() {
-        m_CurrentAccountLoggedIn = null;
+        m_WorkingAccount = null;
     }
 
     public void attemptMicrosoftLogin() {
@@ -28,8 +30,8 @@ public class AuthManager {
         }
     }
 
-    public AbstractAccount getCurrentLoggedInAccount() {
-        return m_CurrentAccountLoggedIn;
+    public AbstractAccount getWorkingAccount() {
+        return m_WorkingAccount;
     }
 
     private void startServer() throws IOException {
@@ -51,17 +53,19 @@ public class AuthManager {
             }
 
             String loginMethod = "Browser";
-            Logger.info("AuthManager", req.getParams().get("code"));
-//            try {
-//                acquireAccessToken(req.getParams().get("code"));
-//            } catch (Exception e) {
-//                Logger.fatal("Error acquiring accessToken", e.toString());
-//
-//                res.getHeaders().add("Content-Type", "text/html");
-//                res.send(500, "Error logging in.");
-//                endAuthServer();
-//                return 0;
-//            }
+            //Logger.info("AuthManager", req.getParams().get("code"));
+            try {
+                m_WorkingAccount = new MicrosoftAccount();
+                m_WorkingAccount.LoginMethod = loginMethod;
+                acquireAccessToken(req.getParams().get("code"));
+            } catch (Exception e) {
+                Logger.fatal("AuthManager", e.toString());
+
+                res.getHeaders().add("Content-Type", "text/html");
+                res.send(500, "Error logging in.");
+                endAuthServer();
+                return 0;
+            }
 
             res.getHeaders().add("Content-Type", "text/plain");
             res.send(200, "Login complete. You can now close this window and go back to MinePacker");
@@ -76,6 +80,15 @@ public class AuthManager {
     // FIXME: The server isn't properly stopping and the application continues to run even when this function has been called and the GUI has been closed
     private void endAuthServer() {
         m_Server.stop();
+    }
+
+    private void acquireAccessToken(String code) throws Exception {
+        OAuthTokenResponse response = MicrosoftAccount.getAccessTokenFromCode(code);
+        if(response != null) {
+            Logger.info("AuthManager", response.AccessToken);
+        } else {
+            Logger.error("AuthManager", "Access Token response is null");
+        }
     }
 
 }
