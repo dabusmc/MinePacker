@@ -1,8 +1,9 @@
 package dabusmc.minepacker.backend.data.projects;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
-import dabusmc.minepacker.backend.data.MinecraftVersion;
+import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
+import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
 import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.io.serialization.ISaveable;
 import org.json.simple.JSONObject;
@@ -83,11 +84,29 @@ public class Project implements ISaveable {
     public JSONObject getSavableObject() {
         JSONObject obj = new JSONObject();
 
+        obj.put("name", m_Name);
+        obj.put("version", m_Version);
+
+        JSONObject mc = new JSONObject();
+
+        mc.put("version", m_MinecraftVersion.toString());
+        mc.put("loader", m_Loader.toString());
+
+        obj.put("minecraft", mc);
+
         return obj;
     }
 
     @Override
     public void getLoadedData(JSONObject data) {
+        m_Name = data.get("name").toString();
+        m_Version = data.get("version").toString();
 
+        JSONObject mc = (JSONObject) data.get("minecraft");
+
+        m_MinecraftVersion = MinecraftVersionConverter.getVersion(mc.get("version").toString());
+        m_Loader = MinecraftVersionConverter.getLoader(mc.get("loader").toString());
+
+        m_RegenerateInstance = false;
     }
 }

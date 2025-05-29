@@ -1,4 +1,4 @@
-package dabusmc.minepacker.backend.data;
+package dabusmc.minepacker.backend.data.minecraft;
 
 public enum MinecraftVersion {
     MC_25w21a("25w21a"),

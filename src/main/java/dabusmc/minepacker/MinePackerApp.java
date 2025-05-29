@@ -1,12 +1,16 @@
 package dabusmc.minepacker;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
-import dabusmc.minepacker.backend.data.MinecraftVersion;
+import dabusmc.minepacker.backend.analytics.Analytics;
+import dabusmc.minepacker.backend.analytics.PerformanceProfile;
+import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
+import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.SecondTestPage;
 import dabusmc.minepacker.frontend.page.TestPage;
@@ -17,6 +21,9 @@ public class MinePackerApp extends Application {
 
     @Override
     public void init() {
+        // Prepare Analytics
+        Analytics.init();
+
         // Initialise Runtime
         new MinePackerRuntime();
         MinePackerRuntime.s_Instance.setLogLevel(LogLevel.MESSAGE);
@@ -29,12 +36,17 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.getCurrentProject().setMinecraftVersion(MinecraftVersion.MC_1_21_5);
         MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Vanilla);
 
+        // Initialise Other Data
+        MinecraftVersionConverter.init();
+
         // Test Authentication
-        MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
+        //MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
 
         // Generate Test Instance
-        //MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
-        //MinePackerRuntime.s_Instance.getInstanceManager().launchInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        MinePackerRuntime.s_Instance.getInstanceManager().launchInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+
+        Logger.info("MinePackerApp", MinecraftVersion.valueOf("MC_1_21_4_rc3"));
     }
 
     @Override
@@ -52,6 +64,11 @@ public class MinePackerApp extends Application {
     @Override
     public void stop() {
         Serializer.save(MinePackerRuntime.s_Instance.getSettings());
+        Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
+        MinePackerRuntime.s_Instance.getInstanceManager().saveInstances();
+
+        Analytics.endAll();
+        Serializer.save(new PerformanceProfile());
     }
 
     public static void main(String[] args) {

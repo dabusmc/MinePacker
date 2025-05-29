@@ -1,16 +1,12 @@
 package dabusmc.minepacker.backend.authorisation.microsoft;
 
-import dabusmc.minepacker.MinePackerApp;
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.authorisation.AbstractAccount;
-import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 public class MicrosoftAccount extends AbstractAccount {

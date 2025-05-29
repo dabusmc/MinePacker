@@ -51,7 +51,7 @@ public class Profile {
 
             return profile;
         } catch (ParseException e) {
-            Logger.fatal("LoginResponse", e.toString());
+            Logger.fatal("Profile", e.toString());
         }
 
         return null;

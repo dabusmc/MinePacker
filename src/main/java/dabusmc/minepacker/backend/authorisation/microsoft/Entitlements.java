@@ -36,7 +36,7 @@ public class Entitlements {
 
             return entitlements;
         } catch (ParseException e) {
-            Logger.fatal("LoginResponse", e.toString());
+            Logger.fatal("Entitlements", e.toString());
         }
 
         return null;
