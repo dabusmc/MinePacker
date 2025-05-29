@@ -7,6 +7,7 @@ module dabusmc.minepacker {
     requires json.simple;
     requires java.desktop;
     requires jdk.httpserver;
+    requires jlhttp;
 
     opens dabusmc.minepacker to javafx.fxml;
     exports dabusmc.minepacker;

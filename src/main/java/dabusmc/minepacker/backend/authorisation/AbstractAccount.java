@@ -4,4 +4,6 @@ public class AbstractAccount {
 
     public String AccessToken;
 
+    public String LoginMethod;
+
 }
