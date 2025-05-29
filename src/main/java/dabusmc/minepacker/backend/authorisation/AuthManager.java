@@ -2,6 +2,7 @@ package dabusmc.minepacker.backend.authorisation;
 
 import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
 import dabusmc.minepacker.backend.authorisation.microsoft.OAuthTokenResponse;
+import dabusmc.minepacker.backend.authorisation.microsoft.XBLAuthResponse;
 import dabusmc.minepacker.backend.io.Browser;
 import dabusmc.minepacker.backend.logging.Logger;
 import net.freeutils.httpserver.HTTPServer;
@@ -84,10 +85,16 @@ public class AuthManager {
 
     private void acquireAccessToken(String code) throws Exception {
         OAuthTokenResponse response = MicrosoftAccount.getAccessTokenFromCode(code);
+        m_WorkingAccount.AccessToken = response;
+        acquireXBLToken(response);
+    }
+
+    private void acquireXBLToken(OAuthTokenResponse tokenResponse) throws Exception {
+        XBLAuthResponse response = MicrosoftAccount.getXBLToken(tokenResponse.AccessToken);
         if(response != null) {
-            Logger.info("AuthManager", response.AccessToken);
+            Logger.info("AuthManager", response.Token);
         } else {
-            Logger.error("AuthManager", "Access Token response is null");
+            Logger.error("AuthManager", "Failed to generate Xbox Live Token");
         }
     }
 

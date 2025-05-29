@@ -79,14 +79,13 @@ public abstract class ModApi {
             HttpResponse<String> response = m_Client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (statusCodeErrorCheck && response.statusCode() != 200) {
-                JSONObject error = (JSONObject) new JSONParser().parse(response.body());
-                Logger.fatal("ModApi", "Request threw status code " + response.statusCode() + ": " + error.get("error_description"));
+                Logger.fatal("ModApi", "Request threw status code " + response.statusCode() + "\n" + response.body());
                 return null;
             }
 
             m_Connected = true;
             return response;
-        } catch (IOException | InterruptedException | ParseException e) {
+        } catch (IOException | InterruptedException e) {
             m_Connected = false;
             Logger.fatal("ModApi", e.toString());
         }
@@ -110,14 +109,13 @@ public abstract class ModApi {
             HttpResponse<String> response = m_Client.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (statusCodeErrorCheck && response.statusCode() != 200) {
-                JSONObject error = (JSONObject) new JSONParser().parse(response.body());
-                Logger.fatal("ModApi", "Request threw status code " + response.statusCode() + ": " + error.get("error_description"));
+                Logger.fatal("ModApi", "Request threw status code " + response.statusCode() + "\n" + response.body());
                 return null;
             }
 
             m_Connected = true;
             return response;
-        } catch (IOException | InterruptedException | ParseException e) {
+        } catch (IOException | InterruptedException e) {
             m_Connected = false;
             Logger.fatal("ModApi", e.toString());
         }
