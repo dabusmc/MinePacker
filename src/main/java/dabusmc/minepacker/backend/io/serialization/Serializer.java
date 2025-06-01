@@ -9,6 +9,8 @@ import java.io.IOException;
 
 public class Serializer {
 
+    private static AutoSerializer s_Autosaver = null;
+
     public static void save(ISaveable saveable) {
         PackerFile.createFolderIfNotExist(saveable.getSaveDirectory());
         String path = PackerFile.combineFilePaths(saveable.getSaveDirectory(), saveable.getFileName());
@@ -46,11 +48,26 @@ public class Serializer {
 
         if(!file.fileExists()) {
             Logger.error("Serializer", "File at path '" + path + "' can't be loaded: File not Found!");
-            file.cleanup();
             return;
         }
 
         saveable.getLoadedData(file.readIntoJson());
+        file.cleanup();
+    }
+
+    public static void registerForAutosave(AutoSaveable saveable) {
+        if(s_Autosaver == null) {
+            s_Autosaver = new AutoSerializer();
+        }
+        s_Autosaver.register(saveable);
+    }
+
+    public static void startAutosaver() {
+        s_Autosaver.start();
+    }
+
+    public static void stopAutosaver() {
+        s_Autosaver.stop();
     }
 
 }

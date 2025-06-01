@@ -1,10 +1,12 @@
 package dabusmc.minepacker.backend.data;
 
 import dabusmc.minepacker.backend.io.PackerFile;
+import dabusmc.minepacker.backend.io.serialization.AutoSaveable;
 import dabusmc.minepacker.backend.io.serialization.ISaveable;
+import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONObject;
 
-public class Settings implements ISaveable {
+public class Settings extends AutoSaveable {
 
     private static final String PROJECTS_DIR_DEFAULT = "/projects";
 
@@ -43,6 +45,11 @@ public class Settings implements ISaveable {
 
     @Override
     public void getLoadedData(JSONObject data) {
+        m_ProjectsDir = data.get("projects_dir").toString();
+    }
 
+    @Override
+    public float getAutosaveInterval() {
+        return -1;
     }
 }

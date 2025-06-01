@@ -19,6 +19,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.Serial;
+
 public class MinePackerApp extends Application {
 
     @Override
@@ -47,6 +49,9 @@ public class MinePackerApp extends Application {
         // Generate Test Instance
         //MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
         //MinePackerRuntime.s_Instance.getInstanceManager().loadInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+
+        // Begin Autosaver
+        Serializer.startAutosaver();
     }
 
     @Override
@@ -76,9 +81,10 @@ public class MinePackerApp extends Application {
 
     @Override
     public void stop() {
+        // Finish App
         MinePackerRuntime.s_Instance.getAuthenticationManager().endAuthServer();
 
-        Serializer.save(MinePackerRuntime.s_Instance.getSettings());
+        // Serialization
         Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
         MinePackerRuntime.s_Instance.getInstanceManager().saveInstances();
 
@@ -86,6 +92,8 @@ public class MinePackerApp extends Application {
         if(Analytics.shouldSave()) {
             Serializer.save(new PerformanceProfile());
         }
+
+        Serializer.stopAutosaver();
     }
 
     public static void main(String[] args) {

@@ -36,7 +36,7 @@ public class MinePackerRuntime {
             m_InstanceManager = new InstanceManager();
             m_AuthenticationManager = new AuthManager();
             m_Settings = new Settings();
-            Serializer.load(m_Settings);
+            Serializer.registerForAutosave(m_Settings);
 
             String os = System.getProperty("os.name");
             if(os != null) {
