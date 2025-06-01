@@ -10,6 +10,7 @@ import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.base.Panel;
 import dabusmc.minepacker.frontend.components.MPButton;
+import dabusmc.minepacker.frontend.components.MPSeparator;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import dabusmc.minepacker.frontend.popups.FileChooserPopup;
 import javafx.geometry.Insets;
@@ -39,7 +40,7 @@ public class ProjectSelectionPage extends Page {
     public void initComponents() {
         addPanel(new PSPLeftPanel(0.25f, Orientation.HORIZONTAL));
 
-        Separator separator = new Separator();
+        MPSeparator separator = new MPSeparator();
         separator.setOrientation(Orientation.VERTICAL);
         m_Root.getChildren().addAll(separator);
 
@@ -73,19 +74,19 @@ public class ProjectSelectionPage extends Page {
 
         @Override
         public void initComponents() {
-            m_Root.setBoxWidth(m_Width);
+            m_Root.setBoxWidth(getWidth());
             m_Root.setAlignment(Pos.TOP_CENTER);
-            m_Root.setPadding(new Insets(7.5f));
+            m_Root.setPadding(new Insets(15.0f, 7.5f, 7.5f, 7.5f));
 
             MPButton newProjectButton = new MPButton("New Project...");
-            newProjectButton.setBtnWidth(m_Width * 0.75f);
+            newProjectButton.setBtnWidth(getWidth() * 0.75f);
 
             newProjectButton.setOnAction(action -> {
                 Logger.info("ProjectSelectionPage", "TODO: Create New Project Dialogue");
             });
 
             MPButton openProjectButton = new MPButton("Open Project...");
-            openProjectButton.setBtnWidth(m_Width * 0.75f);
+            openProjectButton.setBtnWidth(getWidth() * 0.75f);
 
             openProjectButton.setOnAction(action -> {
                 File projectFile;
@@ -129,9 +130,9 @@ public class ProjectSelectionPage extends Page {
 
         @Override
         public void initComponents() {
-            m_Root.setBoxWidth(m_Width);
+            m_Root.setBoxWidth(getWidth());
             m_Root.setAlignment(Pos.TOP_LEFT);
-            m_Root.setPadding(new Insets(7.5f));
+            m_Root.setPadding(new Insets(15.0f, 7.5f, 7.5f, 7.5f));
 
             Label noRecentProjects = new Label("No recent projects...");
 

@@ -5,13 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2df0451-9823-4940-acc0-1af208cc700f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/serialization/AutoSaveable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/serialization/AutoSerializer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPSeparator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ConfigsPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ModsPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/NotesPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/OverviewPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/SettingsPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ThemesPanel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/MinePackerRuntime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/MinePackerRuntime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/Settings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/serialization/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/serialization/Serializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,21 +40,26 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2xuLDP52yGUvHpmqs9Yj2hiv62M" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.MinePackerApp.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MinePackerApp.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dabusmc.minepacker.frontend.page.projectpanels" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="MinePackerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="dabusmc.minepacker.MinePackerApp" />

@@ -36,7 +36,7 @@ public class Page extends AbstractComponentList {
 
     public void addPanel(Panel panel) {
         panel.setPage(this);
-        panel.initComponents();
+        panel.reload();
         getRoot().getChildren().addAll(panel.getRoot());
     }
 
