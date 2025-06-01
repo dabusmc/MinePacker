@@ -34,4 +34,10 @@ public class Page extends AbstractComponentList {
         return ScreenRatioHelper.getHeight(getDimensionRatio()) * getDimensionMultiplier();
     }
 
+    public void addPanel(Panel panel) {
+        panel.setPage(this);
+        panel.initComponents();
+        getRoot().getChildren().addAll(panel.getRoot());
+    }
+
 }

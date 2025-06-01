@@ -5,25 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2df0451-9823-4940-acc0-1af208cc700f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/mclauncher/MCLauncher.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPButton.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPVBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/FileChooserPopup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/analytics/Analytics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/analytics/Analytics.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AbstractAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AbstractAccount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AuthManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AuthManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/LoginResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/MicrosoftAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/MicrosoftAccount.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/MCFileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/MCFileSystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/util/ListPair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/util/ListPair.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/SecondTestPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/TestPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/PageSwitcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/PageSwitcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />

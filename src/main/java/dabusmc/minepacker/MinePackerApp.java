@@ -14,6 +14,9 @@ import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.ProjectPage;
 import dabusmc.minepacker.frontend.page.ProjectSelectionPage;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MinePackerApp extends Application {
@@ -52,10 +55,23 @@ public class MinePackerApp extends Application {
         stage.setTitle("MinePacker");
         stage.setResizable(false);
 
+        // Center page when size changes
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
+        {
+            Rectangle2D bounds = Screen.getPrimary().getBounds();
+            double x = (bounds.getMaxX() / 2.0) - (stage.getWidth() / 2.0);
+            double y = (bounds.getMaxY() / 2.0) - (stage.getHeight() / 2.0);
+            stage.setX(x);
+            stage.setY(y);
+        };
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
+
+
         // Initialise Page Switcher
         new PageSwitcher(stage);
-        PageSwitcher.s_Instance.registerPage("test", new ProjectSelectionPage());
-        PageSwitcher.s_Instance.registerPage("second_test", new ProjectPage());
+        PageSwitcher.s_Instance.registerPage("project_selection", new ProjectSelectionPage());
+        PageSwitcher.s_Instance.registerPage("project", new ProjectPage());
     }
 
     @Override

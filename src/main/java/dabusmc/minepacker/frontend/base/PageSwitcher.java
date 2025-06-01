@@ -10,6 +10,7 @@ import java.util.List;
 
 public class PageSwitcher {
 
+    // TODO: Make this not a singleton
     public static PageSwitcher s_Instance;
 
     private Stage m_Stage;
@@ -30,6 +31,10 @@ public class PageSwitcher {
             m_IDToNameTable = new HashMap<Integer, String>();
             m_CurrentPage = -1;
         }
+    }
+
+    public Stage getStage() {
+        return m_Stage;
     }
 
     /**
