@@ -10,10 +10,12 @@ public class MCFileSystem {
     private String m_VersionDirectory;
     private String m_LibrariesDirectory;
     private String m_BinDirectory;
+    private String m_TempDirectory;
 
     private String m_AssetsDirectory;
     private String m_IndexesDirectory;
     private String m_LogConfigsDirectory;
+    private String m_VirtualDirectory;
     private String m_ObjectsDirectory;
 
     private String m_RuntimesDirectory;
@@ -21,17 +23,20 @@ public class MCFileSystem {
 
     private String m_VersionJSONFilePath;
     private String m_ClientJarFilePath;
+    private String m_ClientLoggingFilePath;
 
     public void setProject(Project prj) {
         m_BaseDirectory = PackerFile.combineFilePaths(prj.getSaveDirectory(), "instance");
         m_VersionsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "versions");
         m_LibrariesDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "libraries");
         m_BinDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "bin");
+        m_TempDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "temp");
 
         m_AssetsDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "assets");
         m_IndexesDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "indexes");
         m_LogConfigsDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "log_configs");
         m_ObjectsDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "objects");
+        m_VirtualDirectory = PackerFile.combineFilePaths(m_AssetsDirectory, "virtual");
 
         m_RuntimesDirectory = PackerFile.combineFilePaths(m_BaseDirectory, "runtimes");
         m_MinecraftRuntimesDirectory = PackerFile.combineFilePaths(m_RuntimesDirectory, "minecraft");
@@ -47,6 +52,7 @@ public class MCFileSystem {
         PackerFile.createFolderIfNotExist(m_IndexesDirectory);
         PackerFile.createFolderIfNotExist(m_LogConfigsDirectory);
         PackerFile.createFolderIfNotExist(m_ObjectsDirectory);
+        PackerFile.createFolderIfNotExist(m_VirtualDirectory);
 
         PackerFile.createFolderIfNotExist(m_RuntimesDirectory);
         PackerFile.createFolderIfNotExist(m_MinecraftRuntimesDirectory);
@@ -76,6 +82,10 @@ public class MCFileSystem {
         return m_BinDirectory;
     }
 
+    public String getTempDirectory() {
+        return m_TempDirectory;
+    }
+
     public String getAssetsDirectory() {
         return m_AssetsDirectory;
     }
@@ -90,6 +100,10 @@ public class MCFileSystem {
 
     public String getObjectsDirectory() {
         return m_ObjectsDirectory;
+    }
+
+    public String getVirtualDirectory() {
+        return m_VirtualDirectory;
     }
 
     public String getRuntimesDirectory() {
@@ -118,4 +132,11 @@ public class MCFileSystem {
         m_ClientJarFilePath = filePath;
     }
 
+    public String getClientLoggingFilePath() {
+        return m_ClientLoggingFilePath;
+    }
+
+    public void setClientLoggingFilePath(String filePath) {
+        m_ClientLoggingFilePath = filePath;
+    }
 }

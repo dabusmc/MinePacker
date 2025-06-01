@@ -37,4 +37,11 @@ public class ListPair<T> {
         m_First.add(val);
     }
 
+    public List<T> getAsSuperList() {
+        List<T> out = new ArrayList<>();
+        out.addAll(m_Second);
+        out.addAll(m_First);
+        return out;
+    }
+
 }

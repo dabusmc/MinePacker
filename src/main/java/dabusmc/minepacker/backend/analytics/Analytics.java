@@ -7,6 +7,10 @@ public class Analytics {
     private static HashMap<String, Calendar> s_TimeTracker;
     private static HashMap<String, AnalyticProfileCollection> s_PerformanceMap;
 
+    public static boolean shouldSave() {
+        return !s_PerformanceMap.isEmpty();
+    }
+
     public static void init() {
         s_TimeTracker = new HashMap<>();
         s_PerformanceMap = new HashMap<>();

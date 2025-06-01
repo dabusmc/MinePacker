@@ -1,5 +1,6 @@
 package dabusmc.minepacker.backend.authorisation;
 
+import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.authorisation.microsoft.*;
 import dabusmc.minepacker.backend.io.Browser;
@@ -37,6 +38,10 @@ public class AuthManager {
     }
 
     public void attemptMicrosoftLogin() {
+        if(!MinePackerRuntime.s_Instance.isConnected()) {
+            return;
+        }
+
         try {
             startServer();
             Browser.open(MicrosoftAccount.MICROSOFT_LOGIN_URL);
@@ -142,6 +147,7 @@ public class AuthManager {
         account.XstsToken = xstsAuthResponse;
         account.AttemptedLoginResponse = loginResponse;
         account.AccountProfile = profile;
+        account.LoggedIn = true;
         m_Accounts.add(account);
 
         Analytics.end("LoginWithMicrosoft");

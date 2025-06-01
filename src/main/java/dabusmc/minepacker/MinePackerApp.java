@@ -3,7 +3,6 @@ package dabusmc.minepacker;
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.analytics.PerformanceProfile;
-import dabusmc.minepacker.backend.authorisation.AuthManager;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
@@ -11,10 +10,9 @@ import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
-import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
-import dabusmc.minepacker.frontend.page.SecondTestPage;
-import dabusmc.minepacker.frontend.page.TestPage;
+import dabusmc.minepacker.frontend.page.ProjectPage;
+import dabusmc.minepacker.frontend.page.ProjectSelectionPage;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -41,12 +39,11 @@ public class MinePackerApp extends Application {
         MinecraftVersionConverter.init();
 
         // Test Authentication
-        MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
+        //MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
 
         // Generate Test Instance
         //MinePackerRuntime.s_Instance.getInstanceManager().generateInstance(MinePackerRuntime.s_Instance.getCurrentProject());
-        MinePackerRuntime.s_Instance.getInstanceManager().loadInstance(MinePackerRuntime.s_Instance.getCurrentProject());
-        MinePackerRuntime.s_Instance.getInstanceManager().launchInstance(MinePackerRuntime.s_Instance.getCurrentProject());
+        //MinePackerRuntime.s_Instance.getInstanceManager().loadInstance(MinePackerRuntime.s_Instance.getCurrentProject());
     }
 
     @Override
@@ -57,8 +54,8 @@ public class MinePackerApp extends Application {
 
         // Initialise Page Switcher
         new PageSwitcher(stage);
-        PageSwitcher.s_Instance.registerPage("test", new TestPage());
-        PageSwitcher.s_Instance.registerPage("second_test", new SecondTestPage());
+        PageSwitcher.s_Instance.registerPage("test", new ProjectSelectionPage());
+        PageSwitcher.s_Instance.registerPage("second_test", new ProjectPage());
     }
 
     @Override
@@ -70,7 +67,9 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.getInstanceManager().saveInstances();
 
         Analytics.endAll();
-        Serializer.save(new PerformanceProfile());
+        if(Analytics.shouldSave()) {
+            Serializer.save(new PerformanceProfile());
+        }
     }
 
     public static void main(String[] args) {

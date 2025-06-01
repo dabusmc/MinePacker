@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a2df0451-9823-4940-acc0-1af208cc700f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/mclauncher/MCLauncher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/analytics/Analytics.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/analytics/Analytics.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AbstractAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AbstractAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AuthManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/AuthManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/LoginResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/LoginResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/MicrosoftAccount.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/authorisation/microsoft/MicrosoftAccount.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/MCFileSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/MCFileSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/util/ListPair.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/util/ListPair.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/SecondTestPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/TestPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2xuLDP52yGUvHpmqs9Yj2hiv62M" />
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.MinePackerApp.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="MinePackerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dabusmc.minepacker.MinePackerApp" />
+      <module name="MinePacker" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="dabusmc.minepacker.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MinePackerApp" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a2df0451-9823-4940-acc0-1af208cc700f" name="Changes" comment="" />
+      <created>1748782892229</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748782892229</updated>
+    </task>
+    <servers />
+  </component>
+</project>

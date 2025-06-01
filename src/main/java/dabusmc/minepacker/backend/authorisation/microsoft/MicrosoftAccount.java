@@ -2,11 +2,14 @@ package dabusmc.minepacker.backend.authorisation.microsoft;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.authorisation.AbstractAccount;
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.backend.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.Date;
 import java.util.UUID;
 
 public class MicrosoftAccount extends AbstractAccount {
@@ -36,6 +39,131 @@ public class MicrosoftAccount extends AbstractAccount {
 
     public MicrosoftAccount() {
         super(AccountType.Microsoft);
+    }
+
+    public boolean refreshAccessToken() {
+        return refreshAccessToken(false);
+    }
+
+    public boolean refreshAccessToken(boolean force) {
+        try {
+            if (force || new Date().after(this.AccessToken.ExpiresAt)) {
+                Logger.message("MicrosoftAccount", "OAuth Access Token expired. Attempting to refresh");
+                OAuthTokenResponse tokenResponse = refreshAccessToken(AccessToken.RefreshToken);
+
+                if (tokenResponse == null) {
+                    LoggedIn = false;
+                    Logger.error("MicrosoftAccount", "Failed to refresh AccessToken");
+                    return false;
+                }
+
+                this.AccessToken = tokenResponse;
+            }
+
+            if (force || new Date().after(this.XstsToken.NotAfter)) {
+                Logger.message("MicrosoftAccount", "Xsts Auth expired. Attempting to get new Auth");
+                XBLAuthResponse xboxLiveAuthResponse = getXBLToken(this.AccessToken.AccessToken);
+                if (xboxLiveAuthResponse == null) {
+                    Logger.error("MicrosoftAccount", "Failed to get XBLToken");
+                    return false;
+                }
+
+                this.XstsToken = getXstsToken(xboxLiveAuthResponse.Token);
+
+                if (XstsToken == null) {
+                    LoggedIn = false;
+                    Logger.error("MicrosoftAccount", "Failed to get XstsToken");
+                    return false;
+                }
+            }
+
+            if (force || new Date().after(this.AttemptedLoginResponse.ExpiresAt)) {
+                LoginResponse loginResponse = loginToMinecraft("XBL3.0 x=" + XstsToken.DisplayClaims.XUI.get(0).UHS + ";" + XstsToken.Token);
+
+                if (loginResponse == null) {
+                    LoggedIn = false;
+                    Logger.error("MicrosoftAccount", "Failed to login to Minecraft");
+                    return false;
+                }
+
+                Entitlements entitlements = getEntitlements(loginResponse.AccessToken);
+
+                if (!(entitlements.Items.stream().anyMatch(i -> i.Name.equalsIgnoreCase("product_minecraft"))
+                        && entitlements.Items.stream().anyMatch(i -> i.Name.equalsIgnoreCase("game_minecraft")))) {
+                    Logger.error("MicrosoftAccount", "This account doesn't have a valid purchase of Minecraft");
+                    return false;
+                }
+
+                // make sure they have a Minecraft profile before saving logins
+                if (!checkAndUpdateProfile(loginResponse.AccessToken)) {
+                    LoggedIn = false;
+                    return false;
+                }
+
+                this.AttemptedLoginResponse = loginResponse;
+            }
+        } catch (Exception e) {
+            Logger.error("MicrosoftAccount", e);
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean checkAndUpdateProfile(String accessToken) {
+        Profile profile = getMCProfile(accessToken);
+
+        if (profile == null) {
+            Logger.error("MicrosoftAccount", "Failed to get Minecraft profile");
+            return false;
+        }
+
+        this.AccountProfile = profile;
+
+        return true;
+    }
+
+    public boolean ensureAccountIsLoggedIn() {
+        if(!LoggedIn) {
+            MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
+            return false;
+        }
+
+        return true;
+    }
+
+    public boolean ensureAccessTokenValid() {
+        if (!ensureAccountIsLoggedIn()) {
+            return false;
+        }
+
+        if (!new Date().after(this.AccessToken.ExpiresAt)) {
+            return true;
+        }
+
+        Logger.message("MicrosoftAccount", "Access Token has expired. Attempting to refresh it.");
+
+        try {
+            return refreshAccessToken();
+        } catch (Exception e) {
+            Logger.error("MicrosoftAccount", e);
+        }
+
+        return false;
+    }
+
+
+    public static OAuthTokenResponse refreshAccessToken(String refreshToken) {
+        String urlEncodedArgs = StringUtils.generateURLEncodedString(
+                "client_id", MICROSOFT_LOGIN_CLIENT_ID,
+                "refresh_token", refreshToken,
+                "grant_type", "refresh_token",
+                "redirect_uri", MICROSOFT_LOGIN_REDIRECT_URL
+        );
+
+        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_AUTH_TOKEN_URL,
+                urlEncodedArgs, true, "Content-Type", "application/x-www-form-urlencoded");
+        return OAuthTokenResponse.generateFromJSONString(response.body());
     }
 
     public static OAuthTokenResponse getAccessTokenFromCode(String code) {
@@ -120,4 +248,8 @@ public class MicrosoftAccount extends AbstractAccount {
         return Profile.generateFromJSONString(response.body());
     }
 
+    @Override
+    public String getUserType() {
+        return "msa";
+    }
 }
