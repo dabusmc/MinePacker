@@ -13,6 +13,7 @@ import dabusmc.minepacker.frontend.components.MPButton;
 import dabusmc.minepacker.frontend.components.MPSeparator;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import dabusmc.minepacker.frontend.popups.FileChooserPopup;
+import dabusmc.minepacker.frontend.popups.NotImplementedPopup;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -82,7 +83,8 @@ public class ProjectSelectionPage extends Page {
             newProjectButton.setBtnWidth(getWidth() * 0.75f);
 
             newProjectButton.setOnAction(action -> {
-                Logger.info("ProjectSelectionPage", "TODO: Create New Project Dialogue");
+                NotImplementedPopup popup = new NotImplementedPopup();
+                popup.display();
             });
 
             MPButton openProjectButton = new MPButton("Open Project...");

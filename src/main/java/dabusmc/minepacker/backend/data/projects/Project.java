@@ -23,9 +23,11 @@ public class Project implements ISaveable {
     private MinecraftVersion m_MinecraftVersion;
     private Mod.Loader m_Loader;
     private boolean m_RegenerateInstance;
+    private boolean m_ChangesMade;
 
     public Project() {
         m_RegenerateInstance = false;
+        m_ChangesMade = false;
     }
 
     public String getName() {
@@ -48,26 +50,38 @@ public class Project implements ISaveable {
         return m_RegenerateInstance;
     }
 
+    public boolean shouldSave() {
+        return m_ChangesMade;
+    }
+
     public void setName(String name) {
         m_Name = name;
+        m_ChangesMade = true;
     }
 
     public void setVersion(String version) {
         m_Version = version;
+        m_ChangesMade = true;
     }
 
     public void setMinecraftVersion(MinecraftVersion minecraftVersion) {
         m_MinecraftVersion = minecraftVersion;
         m_RegenerateInstance = true;
+        m_ChangesMade = true;
     }
 
     public void setLoader(Mod.Loader loader) {
         m_Loader = loader;
         m_RegenerateInstance = true;
+        m_ChangesMade = true;
     }
 
     public void instanceRegenerated() {
         m_RegenerateInstance = false;
+    }
+
+    public void saved() {
+        m_ChangesMade = false;
     }
 
     @Override
@@ -94,6 +108,12 @@ public class Project implements ISaveable {
 
         obj.put("minecraft", mc);
 
+        JSONObject instance = new JSONObject();
+
+        instance.put("should_regenerate", m_RegenerateInstance);
+
+        obj.put("instance", instance);
+
         return obj;
     }
 
@@ -107,6 +127,10 @@ public class Project implements ISaveable {
         m_MinecraftVersion = MinecraftVersionConverter.getVersion(mc.get("version").toString());
         m_Loader = MinecraftVersionConverter.getLoader(mc.get("loader").toString());
 
-        m_RegenerateInstance = false;
+        JSONObject instance = (JSONObject) data.get("instance");
+
+        m_RegenerateInstance = Boolean.parseBoolean(instance.get("should_regenerate").toString());
+
+        m_ChangesMade = false;
     }
 }

@@ -1,6 +1,8 @@
 package dabusmc.minepacker.frontend.base;
 
 import dabusmc.minepacker.backend.logging.Logger;
+import dabusmc.minepacker.frontend.page.ProjectPage;
+import dabusmc.minepacker.frontend.page.ProjectSelectionPage;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -101,6 +103,19 @@ public class PageSwitcher {
         }
 
         return -1;
+    }
+
+    public Page getCurrentPage() {
+        if(m_CurrentPage != -1) {
+            return m_Pages.get(m_CurrentPage);
+        }
+        return null;
+    }
+
+    public void reset() {
+        m_Pages.clear();
+        registerPage("project_selection", new ProjectSelectionPage());
+        registerPage("project", new ProjectPage());
     }
 
 }

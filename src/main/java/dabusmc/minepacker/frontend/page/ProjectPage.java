@@ -1,5 +1,6 @@
 package dabusmc.minepacker.frontend.page;
 
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.base.Panel;

@@ -5,18 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2df0451-9823-4940-acc0-1af208cc700f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPSeparator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ConfigsPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ModsPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/NotesPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/OverviewPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/SettingsPanel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ThemesPanel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Popup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPHBox.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/NotImplementedPopup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/TextPopup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/YesNoPopup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/projects/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/projects/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/PageSwitcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/PageSwitcher.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/OverviewPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/OverviewPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +57,8 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="dabusmc.minepacker.frontend.components" />
+      <recent name="dabusmc.minepacker.frontend.popups" />
       <recent name="dabusmc.minepacker.frontend.page.projectpanels" />
     </key>
   </component>

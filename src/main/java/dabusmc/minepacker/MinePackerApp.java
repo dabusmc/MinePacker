@@ -10,6 +10,7 @@ import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
+import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.ProjectPage;
 import dabusmc.minepacker.frontend.page.ProjectSelectionPage;
@@ -72,11 +73,9 @@ public class MinePackerApp extends Application {
         stage.widthProperty().addListener(stageSizeListener);
         stage.heightProperty().addListener(stageSizeListener);
 
-
         // Initialise Page Switcher
         new PageSwitcher(stage);
-        PageSwitcher.s_Instance.registerPage("project_selection", new ProjectSelectionPage());
-        PageSwitcher.s_Instance.registerPage("project", new ProjectPage());
+        PageSwitcher.s_Instance.reset();
     }
 
     @Override
@@ -85,7 +84,6 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.getAuthenticationManager().endAuthServer();
 
         // Serialization
-        Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
         MinePackerRuntime.s_Instance.getInstanceManager().saveInstances();
 
         Analytics.endAll();
