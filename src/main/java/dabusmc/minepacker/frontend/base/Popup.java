@@ -12,9 +12,14 @@ public class Popup extends Page {
     protected Supplier<Integer> m_OnClose;
 
     public Popup() {
+        this("");
+    }
+
+    public Popup(String name) {
         m_Stage = new Stage();
         m_Stage.initModality(Modality.APPLICATION_MODAL);
         m_Stage.initOwner(PageSwitcher.s_Instance.getStage());
+        m_Stage.setTitle(name);
         m_Stage.setResizable(false);
         m_Stage.setOnHiding(event -> finish());
     }

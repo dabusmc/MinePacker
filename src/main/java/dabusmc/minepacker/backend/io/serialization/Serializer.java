@@ -1,5 +1,6 @@
 package dabusmc.minepacker.backend.io.serialization;
 
+import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONObject;
@@ -18,6 +19,8 @@ public class Serializer {
     }
 
     public static void saveToPath(String path, ISaveable saveable) {
+        Analytics.begin("SaveToPath");
+
         PackerFile file = new PackerFile(path, true);
 
         if(!file.fileExists()) {
@@ -36,6 +39,8 @@ public class Serializer {
         file.cleanup();
 
         Logger.info("Serializer", "Saved JSON Data to path '" + path + "'");
+
+        Analytics.end("SaveToPath");
     }
 
     public static void load(ISaveable saveable) {
@@ -44,6 +49,8 @@ public class Serializer {
     }
 
     public static void loadFromPath(String path, ISaveable saveable) {
+        Analytics.begin("LoadFromPath");
+
         PackerFile file = new PackerFile(path, false);
 
         if(!file.fileExists()) {
@@ -53,6 +60,8 @@ public class Serializer {
 
         saveable.getLoadedData(file.readIntoJson());
         file.cleanup();
+
+        Analytics.end("LoadFromPath");
     }
 
     public static void registerForAutosave(AutoSaveable saveable) {

@@ -1,5 +1,7 @@
 package dabusmc.minepacker.frontend.page;
 
+import dabusmc.minepacker.backend.MinePackerRuntime;
+import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
@@ -18,8 +20,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ProjectPage extends Page {
 
@@ -27,6 +31,7 @@ public class ProjectPage extends Page {
 
     private LinkedHashMap<String, Panel> m_ProjectPanels;
     private String m_CurrentPanel;
+    private List<String> m_DisabledPanels;
 
     private PPLeftPanel m_LeftPanel;
 
@@ -45,6 +50,17 @@ public class ProjectPage extends Page {
         m_ProjectPanels.put("Settings", new SettingsPanel(0.75f, Orientation.HORIZONTAL));
 
         m_LeftPanel = new PPLeftPanel(0.25f, Orientation.HORIZONTAL, m_ProjectPanels);
+
+        m_DisabledPanels = new ArrayList<>();
+
+        if(MinePackerRuntime.s_Instance.getCurrentProject().getLoader() == Mod.Loader.Vanilla) {
+            m_DisabledPanels.add("Mods");
+            m_DisabledPanels.add("Configs");
+        }
+
+        m_DisabledPanels.add("Configs");
+        m_DisabledPanels.add("Notes");
+        m_DisabledPanels.add("Themes");
     }
 
     @Override
@@ -102,7 +118,7 @@ public class ProjectPage extends Page {
                     getPage().reload();
                 });
 
-                if(key.equals(m_CurrentPanel)) {
+                if(key.equals(m_CurrentPanel) || m_DisabledPanels.contains(key)) {
                     button.setDisable(true);
                 }
 

@@ -26,11 +26,11 @@ public class Page extends AbstractComponentList {
         return 80;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return ScreenRatioHelper.getWidth(getDimensionRatio()) * getDimensionMultiplier();
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return ScreenRatioHelper.getHeight(getDimensionRatio()) * getDimensionMultiplier();
     }
 

@@ -1,6 +1,7 @@
 package dabusmc.minepacker.backend;
 
 import dabusmc.minepacker.backend.authorisation.AuthManager;
+import dabusmc.minepacker.backend.data.ModLibrary;
 import dabusmc.minepacker.backend.data.Settings;
 import dabusmc.minepacker.backend.data.projects.instances.InstanceManager;
 import dabusmc.minepacker.backend.data.projects.Project;
@@ -25,6 +26,8 @@ public class MinePackerRuntime {
     private InstanceManager m_InstanceManager;
     private AuthManager m_AuthenticationManager;
 
+    private ModLibrary m_ModLibrary;
+
     public MinePackerRuntime() {
         if (s_Instance != null) {
             Logger.error("MinePackerRuntime", "There should only ever be one instance of MinePackerRuntime");
@@ -37,6 +40,7 @@ public class MinePackerRuntime {
             m_AuthenticationManager = new AuthManager();
             m_Settings = new Settings();
             Serializer.registerForAutosave(m_Settings);
+            m_ModLibrary = new ModLibrary();
 
             String os = System.getProperty("os.name");
             if(os != null) {
@@ -108,6 +112,10 @@ public class MinePackerRuntime {
 
     public Settings getSettings() {
         return m_Settings;
+    }
+
+    public ModLibrary getModLibrary() {
+        return m_ModLibrary;
     }
 
     public OS getOS() {

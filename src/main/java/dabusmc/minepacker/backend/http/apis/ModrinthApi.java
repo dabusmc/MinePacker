@@ -1,10 +1,17 @@
 package dabusmc.minepacker.backend.http.apis;
 
+import dabusmc.minepacker.MinePackerApp;
+import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
+import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.http.ModApi;
+import dabusmc.minepacker.backend.logging.Logger;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.net.URLEncoder;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 
 public class ModrinthApi extends ModApi {
 
@@ -24,6 +31,34 @@ public class ModrinthApi extends ModApi {
         }
 
         return null;
+    }
+
+    @Override
+    public JSONObject search(String query, int pageIndex, int pageLimit) {
+        //String extension = "search?query=\"" + query + "\"&facets=" + facets;
+
+        String facets = generateFacets();
+        String encodedQuery = URLEncoder.encode("\"" + (query == null ? "" : query) + "\"", StandardCharsets.UTF_8);
+        String encodedOffset = URLEncoder.encode(Integer.toString(pageIndex * pageLimit), StandardCharsets.UTF_8);
+        String encodedLimit = URLEncoder.encode(Integer.toString(pageLimit), StandardCharsets.UTF_8);
+
+        String extension = "search?query=" + encodedQuery + "&facets=" + facets + "&offset=" + encodedOffset + "&limit=" + encodedLimit;
+
+        HttpResponse<String> response = get(getFinalURL(BASE_URL, extension), false);
+        return convertHttpResponseToJSONObject(response);
+    }
+
+    @Override
+    public String generateFacets() {
+        Project currentProject = MinePackerRuntime.s_Instance.getCurrentProject();
+
+        String facets = "[[\"categories:";
+        facets += currentProject.getLoader().toString().toLowerCase();
+        facets += "\"],[\"versions:";
+        facets += currentProject.getMinecraftVersion().toString();
+        facets += "\"],[\"project_type:mod\"]]";
+
+        return URLEncoder.encode(facets, StandardCharsets.UTF_8);
     }
 
     @Override

@@ -5,18 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2df0451-9823-4940-acc0-1af208cc700f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Popup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPHBox.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/NotImplementedPopup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/TextPopup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/YesNoPopup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/ModLibrary.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Card.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/cards/ModCard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/components/MPScrollPane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/popups/modspanel/AddModsPopup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/MinePackerApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/projects/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/data/projects/Project.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/PageSwitcher.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/PageSwitcher.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/MinePackerRuntime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/MinePackerRuntime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/http/ModApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/http/ModApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/http/apis/ModrinthApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/http/apis/ModrinthApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/serialization/Serializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/backend/io/serialization/Serializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Page.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Panel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Popup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/base/Popup.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/ProjectSelectionPage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/OverviewPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/OverviewPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ModsPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dabusmc/minepacker/frontend/page/projectpanels/ModsPanel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

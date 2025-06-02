@@ -10,6 +10,7 @@ import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.page.ProjectPage;
@@ -19,6 +20,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.Serial;
 
@@ -39,7 +42,7 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.getCurrentProject().setName("Test Project");
         MinePackerRuntime.s_Instance.getCurrentProject().setVersion("1.0.0");
         MinePackerRuntime.s_Instance.getCurrentProject().setMinecraftVersion(MinecraftVersion.MC_1_21_5);
-        MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Vanilla);
+        MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Forge);
 
         // Initialise Other Data
         MinecraftVersionConverter.init();

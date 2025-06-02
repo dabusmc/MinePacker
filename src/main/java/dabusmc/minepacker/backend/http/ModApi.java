@@ -14,9 +14,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -186,6 +188,10 @@ public abstract class ModApi {
 
     public abstract boolean modIDExists(String id);
     public abstract Mod getModFromID(String id);
+
+    public abstract JSONObject search(String query, int pageIndex, int pageLimit);
+
+    public abstract String generateFacets();
 
     public abstract Mod constructModFromJsonObject(JSONObject obj);
 }

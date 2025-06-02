@@ -48,6 +48,11 @@ public class Panel extends AbstractComponentList {
         getRoot().getChildren().add(title);
     }
 
+    protected void addCard(Card card) {
+        card.reload();
+        getRoot().getChildren().add(card.getRoot());
+    }
+
     protected float getWidth() {
         return m_Width;
     }
