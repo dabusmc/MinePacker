@@ -13,7 +13,7 @@ import dabusmc.minepacker.backend.io.serialization.Serializer;
 
 public class MinePackerRuntime {
 
-    public static MinePackerRuntime s_Instance = null;
+    public static MinePackerRuntime Instance = null;
 
     private LogLevel m_LogLevel;
     private Project m_CurrentProject;
@@ -29,10 +29,10 @@ public class MinePackerRuntime {
     private ModLibrary m_ModLibrary;
 
     public MinePackerRuntime() {
-        if (s_Instance != null) {
+        if (Instance != null) {
             Logger.error("MinePackerRuntime", "There should only ever be one instance of MinePackerRuntime");
         }  else {
-            s_Instance = this;
+            Instance = this;
 
             setLogLevel(LogLevel.MESSAGE);
 

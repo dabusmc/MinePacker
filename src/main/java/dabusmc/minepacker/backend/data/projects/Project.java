@@ -5,9 +5,7 @@ import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
 import dabusmc.minepacker.backend.http.ModApi;
-import dabusmc.minepacker.backend.http.apis.ModrinthApi;
 import dabusmc.minepacker.backend.io.PackerFile;
-import dabusmc.minepacker.backend.io.serialization.ISaveable;
 import dabusmc.minepacker.backend.io.serialization.ISaveableMT;
 import javafx.concurrent.Task;
 import org.json.simple.JSONArray;
@@ -128,7 +126,7 @@ public class Project implements ISaveableMT {
 
     @Override
     public String getSaveDirectory() {
-        return PackerFile.combineFilePaths(MinePackerRuntime.s_Instance.getSettings().getProjectsDir(), PackerFile.convertNameToFileName(m_Name));
+        return PackerFile.combineFilePaths(MinePackerRuntime.Instance.getSettings().getProjectsDir(), PackerFile.convertNameToFileName(m_Name));
     }
 
     @Override
@@ -167,7 +165,7 @@ public class Project implements ISaveableMT {
                 JSONArray mods = new JSONArray();
                 for(int i = 0; i < modsLength; i++) {
                     String modID = m_Mods.get(i);
-                    Mod m = MinePackerRuntime.s_Instance.getModLibrary().getMod(modID);
+                    Mod m = MinePackerRuntime.Instance.getModLibrary().getMod(modID);
 
                     updateProgress(3.0 + i, finalSize);
                     updateMessage("Writing Mod: '" + modID + "'");
@@ -227,9 +225,9 @@ public class Project implements ISaveableMT {
 
                     switch(ModApi.typeFromString(provider)) {
                         case Modrinth -> {
-                            Mod mod = MinePackerRuntime.s_Instance.getModApi().getModFromID(modJSON.get("id").toString());
+                            Mod mod = MinePackerRuntime.Instance.getModApi().getModFromID(modJSON.get("id").toString());
                             addMod(mod.getID());
-                            MinePackerRuntime.s_Instance.getModLibrary().registerMod(mod.getID(), mod);
+                            MinePackerRuntime.Instance.getModLibrary().registerMod(mod.getID(), mod);
                         }
                     }
                 }

@@ -2,9 +2,7 @@ package dabusmc.minepacker.frontend.page;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
-import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Page;
-import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.base.Panel;
 import dabusmc.minepacker.frontend.components.MPButton;
 import dabusmc.minepacker.frontend.components.MPHBox;
@@ -14,12 +12,7 @@ import dabusmc.minepacker.frontend.page.projectpanels.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -57,7 +50,7 @@ public class ProjectPage extends Page {
     public void initComponents() {
         m_DisabledPanels = new ArrayList<>();
 
-        if(MinePackerRuntime.s_Instance.getCurrentProject().getLoader() == Mod.Loader.Vanilla) {
+        if(MinePackerRuntime.Instance.getCurrentProject().getLoader() == Mod.Loader.Vanilla) {
             m_DisabledPanels.add("Mods");
             m_DisabledPanels.add("Configs");
         }

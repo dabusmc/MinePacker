@@ -2,7 +2,6 @@ package dabusmc.minepacker.frontend.popups.modspanel;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
-import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Popup;
 import dabusmc.minepacker.frontend.base.ScreenRatio;
 import dabusmc.minepacker.frontend.cards.ModCard;
@@ -13,10 +12,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -94,12 +91,12 @@ public class AddModsPopup extends Popup {
 
     // TODO: When reloaded, save the scroll position
     private void onModAdded(Mod mod) {
-        MinePackerRuntime.s_Instance.getCurrentProject().addMod(mod.getID());
+        MinePackerRuntime.Instance.getCurrentProject().addMod(mod.getID());
         reload();
     }
 
     private void onModRemoved(Mod mod) {
-        MinePackerRuntime.s_Instance.getCurrentProject().removeMod(mod.getID());
+        MinePackerRuntime.Instance.getCurrentProject().removeMod(mod.getID());
         reload();
     }
 
@@ -150,7 +147,7 @@ public class AddModsPopup extends Popup {
     }
 
     private List<ModCard> searchForMods() {
-        JSONObject searchData = MinePackerRuntime.s_Instance.getModApi().search(m_SearchParameter, m_CurrentPageIndex, 10);
+        JSONObject searchData = MinePackerRuntime.Instance.getModApi().search(m_SearchParameter, m_CurrentPageIndex, 10);
         m_MaxPageIndex = Integer.parseInt(searchData.get("total_hits").toString()) / 10;
 
         List<ModCard> cards = new ArrayList<>();
@@ -160,13 +157,13 @@ public class AddModsPopup extends Popup {
             JSONObject modJSON = (JSONObject) modObj;
             String id = modJSON.get("project_id").toString();
 
-            if(MinePackerRuntime.s_Instance.getModLibrary().containsMod(id)) {
-                cards.add(new ModCard(MinePackerRuntime.s_Instance.getModLibrary().getMod(id)));
+            if(MinePackerRuntime.Instance.getModLibrary().containsMod(id)) {
+                cards.add(new ModCard(MinePackerRuntime.Instance.getModLibrary().getMod(id)));
             } else {
                 // NOTE: Recapturing the Mod JSON from a different URL means that the data we get is consistent with other parts of the program
                 //       Any data that we capture from the search can then be used to simply update the data from the recaptured Mod JSON
-                Mod mod = MinePackerRuntime.s_Instance.getModApi().getModFromID(id);
-                MinePackerRuntime.s_Instance.getModLibrary().registerMod(id, mod);
+                Mod mod = MinePackerRuntime.Instance.getModApi().getModFromID(id);
+                MinePackerRuntime.Instance.getModLibrary().registerMod(id, mod);
 
                 cards.add(new ModCard(mod));
             }

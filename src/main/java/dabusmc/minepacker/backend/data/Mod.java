@@ -9,6 +9,7 @@ public class Mod {
     private String m_Title;
     private String m_Tagline;
     private String m_Description;
+    private String m_IconURL;
     private ModApiType m_Provider;
 
     public Mod() {
@@ -35,6 +36,10 @@ public class Mod {
         return m_Description;
     }
 
+    public String getIconURL() {
+        return m_IconURL;
+    }
+
     public ModApiType getProvider() { return m_Provider; }
 
     public void setID(String id) {
@@ -55,6 +60,10 @@ public class Mod {
 
     public void setDescription(String description) {
         m_Description = description;
+    }
+
+    public void setIconURL(String icon) {
+        m_IconURL = icon;
     }
 
     public void setProvider(ModApiType type) {

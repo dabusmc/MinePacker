@@ -7,7 +7,6 @@ import dabusmc.minepacker.backend.util.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.Date;
 import java.util.UUID;
@@ -125,7 +124,7 @@ public class MicrosoftAccount extends AbstractAccount {
 
     public boolean ensureAccountIsLoggedIn() {
         if(!LoggedIn) {
-            MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
+            MinePackerRuntime.Instance.getAuthenticationManager().attemptMicrosoftLogin();
             return false;
         }
 
@@ -161,7 +160,7 @@ public class MicrosoftAccount extends AbstractAccount {
                 "redirect_uri", MICROSOFT_LOGIN_REDIRECT_URL
         );
 
-        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_AUTH_TOKEN_URL,
+        HttpResponse<String> response = MinePackerRuntime.Instance.getModApi().post(MICROSOFT_AUTH_TOKEN_URL,
                 urlEncodedArgs, true, "Content-Type", "application/x-www-form-urlencoded");
         return OAuthTokenResponse.generateFromJSONString(response.body());
     }
@@ -175,7 +174,7 @@ public class MicrosoftAccount extends AbstractAccount {
                 "scope", String.join(" ", MICROSOFT_LOGIN_SCOPES)
         );
 
-        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_AUTH_TOKEN_URL,
+        HttpResponse<String> response = MinePackerRuntime.Instance.getModApi().post(MICROSOFT_AUTH_TOKEN_URL,
                 urlEncodedArgs, true, "Content-Type", "application/x-www-form-urlencoded");
         return OAuthTokenResponse.generateFromJSONString(response.body());
     }
@@ -191,7 +190,7 @@ public class MicrosoftAccount extends AbstractAccount {
         obj.put("RelyingParty", "http://auth.xboxlive.com");
         obj.put("TokenType", "JWT");
 
-        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_XBL_AUTH_TOKEN_URL,
+        HttpResponse<String> response = MinePackerRuntime.Instance.getModApi().post(MICROSOFT_XBL_AUTH_TOKEN_URL,
                 obj.toJSONString(), true, "Content-Type", "application/json", "Accept", "application/json", "x-xbl-contract-version",
                 "1");
         return XBLAuthResponse.generateFromJSONString(response.body());
@@ -210,7 +209,7 @@ public class MicrosoftAccount extends AbstractAccount {
         obj.put("RelyingParty", "rp://api.minecraftservices.com/");
         obj.put("TokenType", "JWT");
 
-        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().post(MICROSOFT_XSTS_AUTH_TOKEN_URL,
+        HttpResponse<String> response = MinePackerRuntime.Instance.getModApi().post(MICROSOFT_XSTS_AUTH_TOKEN_URL,
                 obj.toJSONString(), true, "Content-Type", "application/json", "Accept", "application/json", "x-xbl-contract-version",
                 "1");
         return XBLAuthResponse.generateFromJSONString(response.body());
@@ -232,7 +231,7 @@ public class MicrosoftAccount extends AbstractAccount {
     }
 
     public static Entitlements getEntitlements(String accessToken) {
-        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().get(
+        HttpResponse<String> response = MinePackerRuntime.Instance.getModApi().get(
                 String.format("%s?requestId=%s", MICROSOFT_MINECRAFT_ENTITLEMENTS_URL, UUID.randomUUID()),
                 true,
                 "Authorization", "Bearer " + accessToken, "Content-Type", "application/json", "Accept",
@@ -241,7 +240,7 @@ public class MicrosoftAccount extends AbstractAccount {
     }
 
     public static Profile getMCProfile(String accessToken) {
-        HttpResponse<String> response = MinePackerRuntime.s_Instance.getModApi().get(
+        HttpResponse<String> response = MinePackerRuntime.Instance.getModApi().get(
                 MICROSOFT_MINECRAFT_PROFILE_URL,
                 true,
                 "Authorization", "Bearer " + accessToken);

@@ -10,7 +10,6 @@ import dabusmc.minepacker.frontend.components.MPHBox;
 import dabusmc.minepacker.frontend.components.MPSeparator;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import dabusmc.minepacker.frontend.popups.NotImplementedPopup;
-import dabusmc.minepacker.frontend.popups.TextPopup;
 import dabusmc.minepacker.frontend.popups.YesNoPopup;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -121,13 +120,13 @@ public class OverviewPanel extends Panel {
     }
 
     private void saveProject() {
-        Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject(), true, (data) -> {
-            MinePackerRuntime.s_Instance.getCurrentProject().saved();
+        Serializer.save(MinePackerRuntime.Instance.getCurrentProject(), true, (data) -> {
+            MinePackerRuntime.Instance.getCurrentProject().saved();
         });
     }
 
     private void closeProject() {
-        if(MinePackerRuntime.s_Instance.getCurrentProject().shouldSave()) {
+        if(MinePackerRuntime.Instance.getCurrentProject().shouldSave()) {
             YesNoPopup popup = new YesNoPopup("Do you want to save the project?");
             popup.display();
 
@@ -137,7 +136,7 @@ public class OverviewPanel extends Panel {
         }
 
         PageSwitcher.s_Instance.reset();
-        Logger.info("OverviewPanel", "Closed Project: '" + MinePackerRuntime.s_Instance.getCurrentProject().getName() + "'");
+        Logger.info("OverviewPanel", "Closed Project: '" + MinePackerRuntime.Instance.getCurrentProject().getName() + "'");
     }
 
 }

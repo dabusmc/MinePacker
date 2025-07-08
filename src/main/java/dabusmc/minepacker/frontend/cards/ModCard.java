@@ -7,9 +7,9 @@ import dabusmc.minepacker.frontend.base.Card;
 import dabusmc.minepacker.frontend.components.MPButtonImage;
 import dabusmc.minepacker.frontend.components.MPHBox;
 import dabusmc.minepacker.frontend.components.MPVBox;
+import dabusmc.minepacker.frontend.threaded.ImageLoaderMT;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -49,8 +49,15 @@ public class ModCard extends Card {
         m_Root.setAlignment(Pos.CENTER_LEFT);
         m_Root.setPadding(new Insets(15.0f, 7.5f, 7.5f, 7.5f));
 
-        InputStream iconData = ModCard.class.getResourceAsStream(MISSING_IMAGE_FILE);
-        Image icon = new Image(iconData);
+        Image icon;
+        if(ImageLoaderMT.Instance.hasImageReady(m_Mod.getID())) {
+            icon = ImageLoaderMT.Instance.getImage(m_Mod.getID());
+        } else {
+            InputStream iconData = ModCard.class.getResourceAsStream(MISSING_IMAGE_FILE);
+            icon = new Image(iconData);
+            ImageLoaderMT.Instance.addImage(m_Mod.getID(), m_Mod.getIconURL());
+            Logger.info("ModCard", m_Mod.getIconURL());
+        }
 
         ImageView view = new ImageView(icon);
         view.setFitWidth(getHeight());
@@ -70,7 +77,7 @@ public class ModCard extends Card {
         modInfoRoot.getChildren().addAll(name, description);
 
         MPButtonImage selectionButton = new MPButtonImage();
-        if(MinePackerRuntime.s_Instance.getCurrentProject().hasMod(m_Mod.getID())) {
+        if(MinePackerRuntime.Instance.getCurrentProject().hasMod(m_Mod.getID())) {
             InputStream selectionData = ModCard.class.getResourceAsStream(CROSS_IMAGE_FILE);
             Image selectionIcon = new Image(selectionData);
             selectionButton.setImage(selectionIcon, 50, 50);

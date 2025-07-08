@@ -12,12 +12,7 @@ import dabusmc.minepacker.frontend.popups.modspanel.AddModsPopup;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,8 +108,8 @@ public class ModsPanel extends Panel {
     private List<ModCard> getMods() {
         List<ModCard> cards = new ArrayList<>();
 
-        for(String modID : MinePackerRuntime.s_Instance.getCurrentProject().getModIDs()) {
-            Mod mod = MinePackerRuntime.s_Instance.getModLibrary().getMod(modID);
+        for(String modID : MinePackerRuntime.Instance.getCurrentProject().getModIDs()) {
+            Mod mod = MinePackerRuntime.Instance.getModLibrary().getMod(modID);
             cards.add(new ModCard(mod));
         }
 
@@ -122,7 +117,7 @@ public class ModsPanel extends Panel {
     }
 
     private void onModRemoved(Mod mod) {
-        MinePackerRuntime.s_Instance.getCurrentProject().removeMod(mod.getID());
+        MinePackerRuntime.Instance.getCurrentProject().removeMod(mod.getID());
         reload();
     }
 }

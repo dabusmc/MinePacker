@@ -15,3 +15,5 @@
     [ ] MultiMC
 
 [ ] Set Default Projects folder in Settings
+
+[ ] Reduce the amount of Singletons

@@ -20,7 +20,7 @@ public class Browser {
 
     public static void open(URI uri) {
         try {
-            if (MinePackerRuntime.s_Instance.getOS() == MinePackerRuntime.OS.Linux && OSUtils.executableInPath("xdg-open")) {
+            if (MinePackerRuntime.Instance.getOS() == MinePackerRuntime.OS.Linux && OSUtils.executableInPath("xdg-open")) {
                 Runtime.getRuntime().exec("xdg-open " + uri);
             } else if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
                 Desktop.getDesktop().browse(uri);

@@ -38,7 +38,7 @@ public class AuthManager {
     }
 
     public void attemptMicrosoftLogin() {
-        if(!MinePackerRuntime.s_Instance.isConnected()) {
+        if(!MinePackerRuntime.Instance.isConnected()) {
             return;
         }
 

@@ -5,12 +5,9 @@ import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
 import dabusmc.minepacker.backend.data.projects.instances.MinecraftInstance;
 import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.logging.Logger;
-import dabusmc.minepacker.backend.util.OSUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -99,7 +96,7 @@ public class MCLauncher {
         List<String> arguments = new ArrayList<>();
 
         String path = javaPath + File.separator + "bin" + File.separator + "java";
-        if (MinePackerRuntime.s_Instance.getOS() == MinePackerRuntime.OS.Windows &&
+        if (MinePackerRuntime.Instance.getOS() == MinePackerRuntime.OS.Windows &&
                 (Files.exists(Paths.get(path + "w")) || Files.exists(Paths.get(path + "w.exe")))) {
             path += "w";
         }
@@ -147,7 +144,7 @@ public class MCLauncher {
             arguments.add(replaceArgument(argument, instance, account, props, nativesDir, classpath, username));
         }
 
-        if (MinePackerRuntime.s_Instance.getOS() == MinePackerRuntime.OS.Windows && !arguments
+        if (MinePackerRuntime.Instance.getOS() == MinePackerRuntime.OS.Windows && !arguments
                 .contains("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump")) {
             arguments.add("-XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump");
         }

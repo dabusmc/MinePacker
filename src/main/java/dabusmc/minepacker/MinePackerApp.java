@@ -3,8 +3,6 @@ package dabusmc.minepacker;
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.analytics.Analytics;
 import dabusmc.minepacker.backend.analytics.PerformanceProfile;
-import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
-import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
@@ -12,6 +10,7 @@ import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.popups.YesNoPopup;
+import dabusmc.minepacker.frontend.threaded.ImageLoaderMT;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
@@ -27,12 +26,13 @@ public class MinePackerApp extends Application {
 
         // Initialise Runtime
         new MinePackerRuntime();
-        MinePackerRuntime.s_Instance.setLogLevel(LogLevel.MESSAGE);
-        MinePackerRuntime.s_Instance.constructModApi(ModApiType.Modrinth);
-        MinePackerRuntime.s_Instance.setCurrentProject(Project.generateDefaultProject());
+        MinePackerRuntime.Instance.setLogLevel(LogLevel.MESSAGE);
+        MinePackerRuntime.Instance.constructModApi(ModApiType.Modrinth);
+        MinePackerRuntime.Instance.setCurrentProject(Project.generateDefaultProject());
 
         // Initialise Other Data
         MinecraftVersionConverter.init();
+        new ImageLoaderMT();
 
         // Test Authentication
         //MinePackerRuntime.s_Instance.getAuthenticationManager().attemptMicrosoftLogin();
@@ -72,10 +72,13 @@ public class MinePackerApp extends Application {
     @Override
     public void stop() {
         // Finish App
-        MinePackerRuntime.s_Instance.getAuthenticationManager().endAuthServer();
+        MinePackerRuntime.Instance.getAuthenticationManager().endAuthServer();
 
         // Serialization
-        MinePackerRuntime.s_Instance.getInstanceManager().saveInstances();
+        MinePackerRuntime.Instance.getInstanceManager().saveInstances();
+
+        // Image Loader
+        ImageLoaderMT.Instance.stop();
 
         Analytics.endAll();
         if(Analytics.shouldSave()) {
@@ -87,12 +90,12 @@ public class MinePackerApp extends Application {
 
     private void onCloseRequested() {
         // Project
-        if(MinePackerRuntime.s_Instance.getCurrentProject().shouldSave()) {
+        if(MinePackerRuntime.Instance.getCurrentProject().shouldSave()) {
             YesNoPopup popup = new YesNoPopup("You have unsaved changes. Would you like to save?");
             popup.display();
 
             if(popup.getAnswer()) {
-                Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject(), true, null);
+                Serializer.save(MinePackerRuntime.Instance.getCurrentProject(), true, null);
             }
         }
     }

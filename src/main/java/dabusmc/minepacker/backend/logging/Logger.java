@@ -5,7 +5,7 @@ import dabusmc.minepacker.backend.MinePackerRuntime;
 public class Logger {
 
     private static void log(String owner, Object message, LogLevel level, TextColor color) {
-        if (logLevelGreaterThan(level, MinePackerRuntime.s_Instance.getLogLevel())) {
+        if (logLevelGreaterThan(level, MinePackerRuntime.Instance.getLogLevel())) {
             String finalMessage = color.toString();
             finalMessage += "[";
             finalMessage += owner;

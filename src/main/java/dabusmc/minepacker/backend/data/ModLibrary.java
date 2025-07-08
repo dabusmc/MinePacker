@@ -34,6 +34,6 @@ public class ModLibrary {
     }
 
     public void registerMod(String id, JSONObject mod) {
-        registerMod(id, MinePackerRuntime.s_Instance.getModApi().constructModFromJsonObject(mod));
+        registerMod(id, MinePackerRuntime.Instance.getModApi().constructModFromJsonObject(mod));
     }
 }

@@ -1,8 +1,6 @@
 package dabusmc.minepacker.frontend.page;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
-import dabusmc.minepacker.backend.authorisation.AbstractAccount;
-import dabusmc.minepacker.backend.authorisation.microsoft.MicrosoftAccount;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
 import dabusmc.minepacker.backend.logging.Logger;
@@ -17,17 +15,12 @@ import dabusmc.minepacker.frontend.popups.NotImplementedPopup;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.Objects;
 
 public class ProjectSelectionPage extends Page {
 
@@ -93,8 +86,8 @@ public class ProjectSelectionPage extends Page {
             openProjectButton.setOnAction(action -> {
                 File projectFile;
 
-                if (!MinePackerRuntime.s_Instance.getSettings().getProjectsDir().isEmpty()) {
-                    projectFile = FileChooserPopup.chooseFile(MinePackerRuntime.s_Instance.getSettings().getProjectsDir(),
+                if (!MinePackerRuntime.Instance.getSettings().getProjectsDir().isEmpty()) {
+                    projectFile = FileChooserPopup.chooseFile(MinePackerRuntime.Instance.getSettings().getProjectsDir(),
                             "Project File",
                             new FileChooser.ExtensionFilter("JSON Files", "*.json"));
                 } else {
@@ -105,7 +98,7 @@ public class ProjectSelectionPage extends Page {
                 if (projectFile != null) {
                     Project prj = new Project();
                     Serializer.loadFromPath(projectFile.getAbsolutePath(), prj, true, (v) -> {
-                        MinePackerRuntime.s_Instance.setCurrentProject(prj);
+                        MinePackerRuntime.Instance.setCurrentProject(prj);
                         Logger.info("ProjectSelectionPage", "Opened Project: '" + prj.getName() + "'");
                         PageSwitcher.s_Instance.switchToPage(PageSwitcher.s_Instance.getPageIndex("project"));
                     });
