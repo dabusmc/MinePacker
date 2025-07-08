@@ -121,10 +121,9 @@ public class OverviewPanel extends Panel {
     }
 
     private void saveProject() {
-        Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
-        MinePackerRuntime.s_Instance.getCurrentProject().saved();
-        TextPopup popup = new TextPopup("Project has been Saved");
-        popup.display();
+        Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject(), true, (data) -> {
+            MinePackerRuntime.s_Instance.getCurrentProject().saved();
+        });
     }
 
     private void closeProject() {

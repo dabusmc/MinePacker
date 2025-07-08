@@ -31,12 +31,6 @@ public class MinePackerApp extends Application {
         MinePackerRuntime.s_Instance.constructModApi(ModApiType.Modrinth);
         MinePackerRuntime.s_Instance.setCurrentProject(Project.generateDefaultProject());
 
-        // Initialise Test Project
-        MinePackerRuntime.s_Instance.getCurrentProject().setName("Test Project");
-        MinePackerRuntime.s_Instance.getCurrentProject().setVersion("1.0.0");
-        MinePackerRuntime.s_Instance.getCurrentProject().setMinecraftVersion(MinecraftVersion.MC_1_21_5);
-        MinePackerRuntime.s_Instance.getCurrentProject().setLoader(Mod.Loader.Forge);
-
         // Initialise Other Data
         MinecraftVersionConverter.init();
 
@@ -98,7 +92,7 @@ public class MinePackerApp extends Application {
             popup.display();
 
             if(popup.getAnswer()) {
-                Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
+                Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject(), true, null);
             }
         }
     }

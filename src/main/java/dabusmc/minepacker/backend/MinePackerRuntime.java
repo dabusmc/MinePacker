@@ -36,6 +36,8 @@ public class MinePackerRuntime {
 
             setLogLevel(LogLevel.MESSAGE);
 
+            m_CurrentProject = null;
+
             m_InstanceManager = new InstanceManager();
             m_AuthenticationManager = new AuthManager();
             m_Settings = new Settings();

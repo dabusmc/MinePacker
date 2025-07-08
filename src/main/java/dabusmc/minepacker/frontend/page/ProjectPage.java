@@ -51,7 +51,10 @@ public class ProjectPage extends Page {
         m_ProjectPanels.put("Settings", new SettingsPanel(0.75f, Orientation.HORIZONTAL));
 
         m_LeftPanel = new PPLeftPanel(0.25f, Orientation.HORIZONTAL, m_ProjectPanels);
+    }
 
+    @Override
+    public void initComponents() {
         m_DisabledPanels = new ArrayList<>();
 
         if(MinePackerRuntime.s_Instance.getCurrentProject().getLoader() == Mod.Loader.Vanilla) {
@@ -62,10 +65,7 @@ public class ProjectPage extends Page {
         m_DisabledPanels.add("Configs");
         m_DisabledPanels.add("Notes");
         m_DisabledPanels.add("Themes");
-    }
 
-    @Override
-    public void initComponents() {
         addPanel(m_LeftPanel);
 
         MPSeparator separator = new MPSeparator();

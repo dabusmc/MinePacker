@@ -104,10 +104,11 @@ public class ProjectSelectionPage extends Page {
 
                 if (projectFile != null) {
                     Project prj = new Project();
-                    Serializer.loadFromPath(projectFile.getAbsolutePath(), prj);
-                    MinePackerRuntime.s_Instance.setCurrentProject(prj);
-                    Logger.info("ProjectSelectionPage", "Opened Project: '" + prj.getName() + "'");
-                    PageSwitcher.s_Instance.switchToPage(PageSwitcher.s_Instance.getPageIndex("project"));
+                    Serializer.loadFromPath(projectFile.getAbsolutePath(), prj, true, (v) -> {
+                        MinePackerRuntime.s_Instance.setCurrentProject(prj);
+                        Logger.info("ProjectSelectionPage", "Opened Project: '" + prj.getName() + "'");
+                        PageSwitcher.s_Instance.switchToPage(PageSwitcher.s_Instance.getPageIndex("project"));
+                    });
                 }
             });
 

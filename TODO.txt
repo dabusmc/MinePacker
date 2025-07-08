@@ -2,7 +2,7 @@
 
 [x] Ask the user if they want to save their work before quitting (if the project hasn't been saved)
 
-[ ] Multithreaded saving and loading
+[z] Multithreaded saving and loading
 
 [ ] Load all mod images when they are added to the Mod Library (Multithreaded)
 
@@ -13,3 +13,5 @@
 [ ] Exporting
     [ ] Curseforge
     [ ] MultiMC
+
+[ ] Set Default Projects folder in Settings
