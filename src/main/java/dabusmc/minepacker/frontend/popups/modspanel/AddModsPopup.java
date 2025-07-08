@@ -92,6 +92,7 @@ public class AddModsPopup extends Popup {
         return 80;
     }
 
+    // TODO: When reloaded, save the scroll position
     private void onModAdded(Mod mod) {
         MinePackerRuntime.s_Instance.getCurrentProject().addMod(mod.getID());
         reload();

@@ -122,6 +122,7 @@ public class ModsPanel extends Panel {
     }
 
     private void onModRemoved(Mod mod) {
-
+        MinePackerRuntime.s_Instance.getCurrentProject().removeMod(mod.getID());
+        reload();
     }
 }

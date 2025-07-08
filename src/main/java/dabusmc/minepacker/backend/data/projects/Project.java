@@ -95,12 +95,16 @@ public class Project implements ISaveable {
     public void addMod(String id) {
         if(!hasMod(id)) {
             m_Mods.add(id);
+            m_RegenerateInstance = true;
+            m_ChangesMade = true;
         }
     }
 
     public void removeMod(String id) {
         if(hasMod(id)) {
             m_Mods.remove(id);
+            m_RegenerateInstance = true;
+            m_ChangesMade = true;
         }
     }
 
