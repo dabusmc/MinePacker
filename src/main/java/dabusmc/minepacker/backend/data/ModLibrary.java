@@ -1,6 +1,7 @@
 package dabusmc.minepacker.backend.data;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
+import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONObject;
 
 import java.util.HashMap;
@@ -28,6 +29,7 @@ public class ModLibrary {
         if(containsMod(id))
             return;
 
+        Logger.message("ModLibrary", "Added Mod '" + mod.getTitle() + "'");
         m_ModMap.put(id, mod);
     }
 

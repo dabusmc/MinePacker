@@ -10,20 +10,13 @@ import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
-import dabusmc.minepacker.backend.logging.Logger;
-import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
-import dabusmc.minepacker.frontend.page.ProjectPage;
-import dabusmc.minepacker.frontend.page.ProjectSelectionPage;
+import dabusmc.minepacker.frontend.popups.YesNoPopup;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import java.io.Serial;
 
 public class MinePackerApp extends Application {
 
@@ -63,6 +56,7 @@ public class MinePackerApp extends Application {
         // Initialise Stage
         stage.setTitle("MinePacker");
         stage.setResizable(false);
+        stage.setOnCloseRequest(event -> onCloseRequested());
 
         // Center page when size changes
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) ->
@@ -95,6 +89,18 @@ public class MinePackerApp extends Application {
         }
 
         Serializer.stopAutosaver();
+    }
+
+    private void onCloseRequested() {
+        // Project
+        if(MinePackerRuntime.s_Instance.getCurrentProject().shouldSave()) {
+            YesNoPopup popup = new YesNoPopup("You have unsaved changes. Would you like to save?");
+            popup.display();
+
+            if(popup.getAnswer()) {
+                Serializer.save(MinePackerRuntime.s_Instance.getCurrentProject());
+            }
+        }
     }
 
     public static void main(String[] args) {

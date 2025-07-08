@@ -63,13 +63,13 @@ public class ModsPanel extends Panel {
 
     private MPScrollPane generateModView() {
         MPVBox cardsContainer = new MPVBox(7.5);
-        cardsContainer.setBoxWidth(getWidth() * 0.9);
+        cardsContainer.setBoxWidth(getWidth() * 0.875);
         cardsContainer.setAlignment(Pos.TOP_CENTER);
         cardsContainer.setPadding(new Insets(15.0));
 
         List<ModCard> cards = getMods();
         for(ModCard card : cards) {
-            card.setWidth(getWidth() * 0.9);
+            card.setWidth(getWidth() * 0.85);
             card.initComponents();
 
             card.setOnModRemove(this::onModRemoved);
