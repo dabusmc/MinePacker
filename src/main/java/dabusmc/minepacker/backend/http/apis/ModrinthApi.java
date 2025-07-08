@@ -5,6 +5,7 @@ import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.http.ModApi;
+import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -70,6 +71,7 @@ public class ModrinthApi extends ModApi {
         m.setTitle(obj.get("title").toString());
         m.setTagline(obj.get("description").toString());
         m.setDescription(obj.get("body").toString());
+        m.setProvider(ModApiType.Modrinth);
 
         return m;
     }

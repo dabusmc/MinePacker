@@ -41,6 +41,14 @@ public class Panel extends AbstractComponentList {
         getRoot().setPrefHeight(m_Height);
     }
 
+    public void setHeight(float height)
+    {
+        m_Height = height;
+        getRoot().setMaxHeight(m_Height);
+        getRoot().setMinHeight(m_Height);
+        getRoot().setPrefHeight(m_Height);
+    }
+
     protected void addTitle(String text) {
         Label title = new Label(text);
         title.setFont(new Font("System", 24));
@@ -53,11 +61,11 @@ public class Panel extends AbstractComponentList {
         getRoot().getChildren().add(card.getRoot());
     }
 
-    protected float getWidth() {
+    public float getWidth() {
         return m_Width;
     }
 
-    protected float getHeight() {
+    public float getHeight() {
         return m_Height;
     }
 

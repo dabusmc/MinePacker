@@ -1,5 +1,7 @@
 package dabusmc.minepacker.backend.data;
 
+import dabusmc.minepacker.backend.http.ModApiType;
+
 public class Mod {
 
     private String m_ID;
@@ -7,6 +9,7 @@ public class Mod {
     private String m_Title;
     private String m_Tagline;
     private String m_Description;
+    private ModApiType m_Provider;
 
     public Mod() {
 
@@ -32,6 +35,8 @@ public class Mod {
         return m_Description;
     }
 
+    public ModApiType getProvider() { return m_Provider; }
+
     public void setID(String id) {
         m_ID = id;
     }
@@ -50,6 +55,10 @@ public class Mod {
 
     public void setDescription(String description) {
         m_Description = description;
+    }
+
+    public void setProvider(ModApiType type) {
+        m_Provider = type;
     }
 
     @Override

@@ -38,6 +38,15 @@ public abstract class ModApi {
         return null;
     }
 
+    public static ModApiType typeFromString(String str) {
+        if(str.equals(ModApiType.Modrinth.toString())) {
+            return ModApiType.Modrinth;
+        }
+
+        Logger.fatal("ModApi", "Unrecognised API Type: " + str);
+        return ModApiType.Modrinth;
+    }
+
     private HttpClient m_Client = null;
     private JSONParser m_Parser = null;
     private boolean m_Connected = false;

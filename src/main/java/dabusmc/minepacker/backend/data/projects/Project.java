@@ -4,9 +4,15 @@ import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersion;
 import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.minecraft.MinecraftVersionConverter;
+import dabusmc.minepacker.backend.http.ModApi;
+import dabusmc.minepacker.backend.http.apis.ModrinthApi;
 import dabusmc.minepacker.backend.io.PackerFile;
 import dabusmc.minepacker.backend.io.serialization.ISaveable;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Project implements ISaveable {
 
@@ -24,6 +30,8 @@ public class Project implements ISaveable {
     private Mod.Loader m_Loader;
     private boolean m_RegenerateInstance;
     private boolean m_ChangesMade;
+
+    private List<String> m_Mods = new ArrayList<>();
 
     public Project() {
         m_RegenerateInstance = false;
@@ -54,6 +62,14 @@ public class Project implements ISaveable {
         return m_ChangesMade;
     }
 
+    public boolean hasMod(String id) {
+        return m_Mods.contains(id);
+    }
+
+    public List<String> getModIDs() {
+        return m_Mods;
+    }
+
     public void setName(String name) {
         m_Name = name;
         m_ChangesMade = true;
@@ -74,6 +90,18 @@ public class Project implements ISaveable {
         m_Loader = loader;
         m_RegenerateInstance = true;
         m_ChangesMade = true;
+    }
+
+    public void addMod(String id) {
+        if(!hasMod(id)) {
+            m_Mods.add(id);
+        }
+    }
+
+    public void removeMod(String id) {
+        if(hasMod(id)) {
+            m_Mods.remove(id);
+        }
     }
 
     public void instanceRegenerated() {
@@ -114,6 +142,18 @@ public class Project implements ISaveable {
 
         obj.put("instance", instance);
 
+        JSONArray mods = new JSONArray();
+
+        for(String id : m_Mods) {
+            JSONObject mod = new JSONObject();
+            mod.put("id", id);
+            Mod m = MinePackerRuntime.s_Instance.getModLibrary().getMod(id);
+            mod.put("provider", m.getProvider().toString());
+            mods.add(mod);
+        }
+
+        obj.put("mods", mods);
+
         return obj;
     }
 
@@ -130,6 +170,20 @@ public class Project implements ISaveable {
         JSONObject instance = (JSONObject) data.get("instance");
 
         m_RegenerateInstance = Boolean.parseBoolean(instance.get("should_regenerate").toString());
+
+        JSONArray mods = (JSONArray)data.get("mods");
+        for(Object modData : mods) {
+            JSONObject modJSON = (JSONObject) modData;
+            String provider = modJSON.get("provider").toString();
+
+            switch(ModApi.typeFromString(provider)) {
+                case Modrinth -> {
+                    Mod mod = MinePackerRuntime.s_Instance.getModApi().getModFromID(modJSON.get("id").toString());
+                    addMod(mod.getID());
+                    MinePackerRuntime.s_Instance.getModLibrary().registerMod(mod.getID(), mod);
+                }
+            }
+        }
 
         m_ChangesMade = false;
     }

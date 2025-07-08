@@ -7,6 +7,7 @@ import dabusmc.minepacker.frontend.base.Page;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import dabusmc.minepacker.frontend.base.Panel;
 import dabusmc.minepacker.frontend.components.MPButton;
+import dabusmc.minepacker.frontend.components.MPHBox;
 import dabusmc.minepacker.frontend.components.MPSeparator;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import dabusmc.minepacker.frontend.page.projectpanels.*;
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class ProjectPage extends Page {
 
-    private HBox m_Root;
+    private MPHBox m_Root;
 
     private LinkedHashMap<String, Panel> m_ProjectPanels;
     private String m_CurrentPanel;
@@ -36,7 +37,7 @@ public class ProjectPage extends Page {
     private PPLeftPanel m_LeftPanel;
 
     public ProjectPage() {
-        m_Root = new HBox();
+        m_Root = new MPHBox();
 
         m_CurrentPanel = "blank";
 

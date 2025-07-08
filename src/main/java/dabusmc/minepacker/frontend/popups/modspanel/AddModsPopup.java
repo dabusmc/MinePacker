@@ -11,6 +11,7 @@ import dabusmc.minepacker.frontend.components.MPScrollPane;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -62,6 +63,10 @@ public class AddModsPopup extends Popup {
         for(ModCard card : cards) {
             card.setWidth(getWidth() * 0.85);
             card.initComponents();
+
+            card.setOnModAdded(this::onModAdded);
+            card.setOnModRemove(this::onModRemoved);
+
             cardsContainer.getChildren().add(card.getRoot());
         }
 
@@ -87,14 +92,58 @@ public class AddModsPopup extends Popup {
         return 80;
     }
 
+    private void onModAdded(Mod mod) {
+        MinePackerRuntime.s_Instance.getCurrentProject().addMod(mod.getID());
+        reload();
+    }
+
+    private void onModRemoved(Mod mod) {
+        MinePackerRuntime.s_Instance.getCurrentProject().removeMod(mod.getID());
+        reload();
+    }
+
     private MPHBox generateNumbersPanel() {
-        MPHBox numbersPanelRoot = new MPHBox(7.5);
+        MPHBox numbersPanelRoot = new MPHBox(15.0);
         numbersPanelRoot.setBoxWidth(getWidth());
         numbersPanelRoot.setAlignment(Pos.CENTER);
         numbersPanelRoot.setPadding(new Insets(15.0));
 
+        Button leftButton = new Button("<");
+        leftButton.setOnAction(action -> {
+            m_CurrentPageIndex -= 1;
+            reload();
+        });
+
+        if(m_CurrentPageIndex == 0)
+        {
+            leftButton.setDisable(true);
+        }
+        else
+        {
+            leftButton.setDisable(false);
+        }
+
+        numbersPanelRoot.getChildren().addAll(leftButton);
+
         Label currentPage = new Label(Integer.toString(m_CurrentPageIndex + 1));
         numbersPanelRoot.getChildren().addAll(currentPage);
+
+        Button rightButton = new Button(">");
+        rightButton.setOnAction(action -> {
+            m_CurrentPageIndex += 1;
+            reload();
+        });
+
+        if(m_CurrentPageIndex == m_MaxPageIndex)
+        {
+            rightButton.setDisable(true);
+        }
+        else
+        {
+            rightButton.setDisable(false);
+        }
+
+        numbersPanelRoot.getChildren().addAll(rightButton);
 
         return numbersPanelRoot;
     }
