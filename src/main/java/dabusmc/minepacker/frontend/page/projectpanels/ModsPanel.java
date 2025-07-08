@@ -21,9 +21,12 @@ public class ModsPanel extends Panel {
 
     private MPVBox m_Root;
 
+    private AddModsPopup m_Popup;
+
     public ModsPanel(float screenSpaceRatio, Orientation direction) {
         super(screenSpaceRatio, direction);
         m_Root = new MPVBox(5.0);
+        m_Popup = null;
     }
 
     @Override
@@ -49,11 +52,15 @@ public class ModsPanel extends Panel {
 
         MPVBox bottomPanel = generateBottomPanel();
 
-//        Region spacer = new Region();
-//        MPVBox.setVgrow(spacer, Priority.NEVER);
-//        spacer.setMinHeight(getHeight() - (getHeight() * 0.2875));
-
         m_Root.getChildren().addAll(titleSeparator, modView, bottomPanelSeparator, bottomPanel);
+    }
+
+    @Override
+    public void reload() {
+        super.reload();
+        if(m_Popup != null) {
+            m_Popup.reload();
+        }
     }
 
     private MPScrollPane generateModView() {
@@ -97,12 +104,13 @@ public class ModsPanel extends Panel {
     }
 
     private void addMods() {
-        AddModsPopup popup = new AddModsPopup();
-        popup.setOnClose(() -> {
+        m_Popup = new AddModsPopup();
+        m_Popup.setOnClose(() -> {
             reload();
+            m_Popup = null;
             return 0;
         });
-        popup.display();
+        m_Popup.display();
     }
 
     private List<ModCard> getMods() {

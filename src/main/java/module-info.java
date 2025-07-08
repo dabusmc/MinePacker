@@ -1,6 +1,7 @@
 module dabusmc.minepacker {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.swing;
 
     requires org.controlsfx.controls;
     requires java.net.http;

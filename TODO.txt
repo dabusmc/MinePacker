@@ -4,7 +4,9 @@
 
 [z] Multithreaded saving and loading
 
-[ ] Load all mod images when they are added to the Mod Library (Multithreaded)
+[x] Load all mod images when they are added to the Mod Library (Multithreaded)
+
+[ ] Speed up changing pages on the Add Mods Popup
 
 [ ] Support for external mods
 

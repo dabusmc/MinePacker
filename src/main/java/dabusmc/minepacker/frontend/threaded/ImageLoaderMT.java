@@ -1,6 +1,7 @@
 package dabusmc.minepacker.frontend.threaded;
 
 import dabusmc.minepacker.backend.logging.Logger;
+import dabusmc.minepacker.backend.util.ImageUtils;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
@@ -32,7 +33,13 @@ public class ImageLoaderMT {
                     String name = (String) m_ImagesToLoad.keySet().toArray()[i];
                     String url = m_ImagesToLoad.get(name);
 
-                    Image image = new Image(url);
+                    Image image;
+                    if(ImageUtils.isWebp(url)) {
+                        image = ImageUtils.loadWebpImage(url);
+                    } else {
+                        image = new Image(url);
+                    }
+
                     m_LoadedImages.put(name, image);
                     m_ImagesToLoad.remove(name);
 

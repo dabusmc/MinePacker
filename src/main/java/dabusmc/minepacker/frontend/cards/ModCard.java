@@ -56,7 +56,6 @@ public class ModCard extends Card {
             InputStream iconData = ModCard.class.getResourceAsStream(MISSING_IMAGE_FILE);
             icon = new Image(iconData);
             ImageLoaderMT.Instance.addImage(m_Mod.getID(), m_Mod.getIconURL());
-            Logger.info("ModCard", m_Mod.getIconURL());
         }
 
         ImageView view = new ImageView(icon);
