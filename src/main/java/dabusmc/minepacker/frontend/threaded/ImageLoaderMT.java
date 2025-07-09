@@ -43,7 +43,7 @@ public class ImageLoaderMT {
                     m_LoadedImages.put(name, image);
                     m_ImagesToLoad.remove(name);
 
-                    Logger.message("ImageLoaderMT", "Loaded Image " + name);
+                    //Logger.message("ImageLoaderMT", "Loaded Image " + name);
 
                     imagesChanged = true;
                 }
@@ -54,7 +54,7 @@ public class ImageLoaderMT {
                 }
             };
 
-            m_Executor = Executors.newScheduledThreadPool(1);
+            m_Executor = Executors.newScheduledThreadPool(2);
             m_Executor.scheduleAtFixedRate(loadImages, 0, 1, TimeUnit.SECONDS);
 
             Logger.info("ImageLoaderMT", "Image Loader Running");

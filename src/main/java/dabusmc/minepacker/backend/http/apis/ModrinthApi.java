@@ -5,6 +5,7 @@ import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.http.ModApi;
 import dabusmc.minepacker.backend.http.ModApiType;
+import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONObject;
 
 import java.net.URLEncoder;

@@ -1,5 +1,7 @@
 package dabusmc.minepacker.backend.analytics;
 
+import dabusmc.minepacker.backend.logging.LogLevel;
+
 import java.util.*;
 
 public class Analytics {
@@ -7,15 +9,26 @@ public class Analytics {
     private static HashMap<String, Calendar> s_TimeTracker;
     private static HashMap<String, AnalyticProfileCollection> s_PerformanceMap;
 
+    /**
+     * Determines if the Analytics should be saved
+     * @return True if the Analytics should be saved, otherwise false
+     */
     public static boolean shouldSave() {
         return !s_PerformanceMap.isEmpty();
     }
 
+    /**
+     * Initialises the Analytics
+     */
     public static void init() {
         s_TimeTracker = new HashMap<>();
         s_PerformanceMap = new HashMap<>();
     }
 
+    /**
+     * Start tracking the performance of a function with a specified name. Must have a call to {@link #end(String)} within the same scope.
+     * @param name The name of the function to track
+     */
     public static void begin(String name) {
         if(s_TimeTracker.containsKey(name))
             return;
@@ -24,6 +37,10 @@ public class Analytics {
         s_TimeTracker.put(name, current);
     }
 
+    /**
+     * End tracking the performance of a function. Must have called {@link #begin(String)} before in the same scope and the {@code name}s must match
+     * @param name The name of the function to stop tracking
+     */
     public static void end(String name) {
         if(s_TimeTracker.containsKey(name)) {
             Calendar startTime = s_TimeTracker.get(name);
@@ -51,6 +68,9 @@ public class Analytics {
         }
     }
 
+    /**
+     * Ends all currently active performance trackers
+     */
     public static void endAll() {
         String[] names = s_TimeTracker.keySet().toArray(new String[0]);
         for(String name : names) {
@@ -58,6 +78,10 @@ public class Analytics {
         }
     }
 
+    /**
+     * Returns a map of all the tracked Performance data
+     * @return A HashMap linking the names (specified in {@link #begin(String)}) and the {@link AnalyticProfileCollection}s
+     */
     public static HashMap<String, AnalyticProfileCollection> getPerformanceMap() {
         return s_PerformanceMap;
     }

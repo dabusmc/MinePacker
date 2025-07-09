@@ -7,6 +7,7 @@
 [x] Load all mod images when they are added to the Mod Library (Multithreaded)
 
 [ ] Speed up changing pages on the Add Mods Popup
+[ ] Don't add the mods to the Mod Library unless they are added to the project
 
 [ ] Support for external mods
 

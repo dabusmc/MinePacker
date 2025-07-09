@@ -2,11 +2,13 @@ package dabusmc.minepacker.frontend.popups.modspanel;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
+import dabusmc.minepacker.backend.logging.Logger;
 import dabusmc.minepacker.frontend.base.Popup;
 import dabusmc.minepacker.frontend.base.ScreenRatio;
 import dabusmc.minepacker.frontend.cards.ModCard;
 import dabusmc.minepacker.frontend.components.MPHBox;
 import dabusmc.minepacker.frontend.components.MPScrollPane;
+import dabusmc.minepacker.frontend.components.MPSearchBar;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +19,7 @@ import javafx.scene.layout.Pane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import javax.print.attribute.HashPrintJobAttributeSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,7 @@ public class AddModsPopup extends Popup {
         super("MinePacker - Add Mods");
 
         m_Root = new MPVBox(7.5);
+        m_SearchParameter = "";
     }
 
     @Override
@@ -43,10 +47,22 @@ public class AddModsPopup extends Popup {
     public void initComponents() {
         m_Root.setBoxWidth(getWidth());
         m_Root.setAlignment(Pos.TOP_CENTER);
-        m_Root.setPadding(new Insets(15.0));
+        m_Root.setPadding(new Insets(7.5));
 
         // Show Search Bar and Search Settings
-        TextField tempSearchBar = new TextField();
+        MPHBox searchSettings = new MPHBox(7.5);
+        searchSettings.setBoxWidth(getWidth() * 0.85);
+        searchSettings.setAlignment(Pos.TOP_LEFT);
+
+        MPSearchBar searchBar = new MPSearchBar(getWidth() * 0.5);
+        searchBar.setSearchTerm(m_SearchParameter);
+        searchBar.setOnSearch(term -> {
+            m_SearchParameter = term;
+            m_CurrentPageIndex = 0;
+            reload();
+        });
+
+        searchSettings.getChildren().addAll(searchBar);
 
         // Get the Mods from the API
         List<ModCard> cards = searchForMods();
@@ -56,6 +72,11 @@ public class AddModsPopup extends Popup {
         cardsContainer.setBoxWidth(getWidth() * 0.85);
         cardsContainer.setAlignment(Pos.TOP_CENTER);
         cardsContainer.setPadding(new Insets(15.0));
+
+        if(cards.isEmpty()) {
+            Label noResultsLabel = new Label("No results found for '" + m_SearchParameter + "' :(");
+            cardsContainer.getChildren().addAll(noResultsLabel);
+        }
 
         for(ModCard card : cards) {
             card.setWidth(getWidth() * 0.85);
@@ -69,14 +90,14 @@ public class AddModsPopup extends Popup {
 
         MPScrollPane cardsScroller = new MPScrollPane();
         cardsScroller.setPaneWidth(getWidth() * 0.9);
-        cardsScroller.setPaneHeight(getHeight() * 0.85);
+        cardsScroller.setPaneHeight(getHeight() * 0.825);
         cardsScroller.setContent(cardsContainer);
 
         // Show the Search Numbers
         MPHBox numbersPanel = generateNumbersPanel();
 
         // Add Everything to root
-        m_Root.getChildren().addAll(tempSearchBar, cardsScroller, numbersPanel);
+        m_Root.getChildren().addAll(searchSettings, cardsScroller, numbersPanel);
     }
 
     @Override
