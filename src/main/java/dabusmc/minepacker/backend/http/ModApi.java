@@ -195,12 +195,20 @@ public abstract class ModApi {
         return 0;
     }
 
+    public JSONObject search(String query, int pageIndex, int pageLimit)
+    {
+        return search(query, pageIndex, pageLimit, ModSortingOrder.Relevance);
+    }
+
     public abstract boolean modIDExists(String id);
     public abstract Mod getModFromID(String id);
 
-    public abstract JSONObject search(String query, int pageIndex, int pageLimit);
+    public abstract JSONObject search(String query, int pageIndex, int pageLimit, ModSortingOrder order);
 
     public abstract String generateFacets();
 
     public abstract Mod constructModFromJsonObject(JSONObject obj);
+
+    public abstract String sortingOrderToString(ModSortingOrder order);
+    public abstract ModSortingOrder stringToSortingOrder(String order);
 }

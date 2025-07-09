@@ -50,7 +50,10 @@ public class ModCard extends Card {
         m_Root.setPadding(new Insets(15.0f, 7.5f, 7.5f, 7.5f));
 
         Image icon;
-        if(ImageLoaderMT.Instance.hasImageReady(m_Mod.getID())) {
+        if(m_Mod.getIconURL().equals("none")) {
+            InputStream iconData = ModCard.class.getResourceAsStream(MISSING_IMAGE_FILE);
+            icon = new Image(iconData);
+        } else if(ImageLoaderMT.Instance.hasImageReady(m_Mod.getID())) {
             icon = ImageLoaderMT.Instance.getImage(m_Mod.getID());
         } else {
             InputStream iconData = ModCard.class.getResourceAsStream(MISSING_IMAGE_FILE);

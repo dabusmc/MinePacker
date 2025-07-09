@@ -2,24 +2,23 @@ package dabusmc.minepacker.frontend.popups.modspanel;
 
 import dabusmc.minepacker.backend.MinePackerRuntime;
 import dabusmc.minepacker.backend.data.Mod;
-import dabusmc.minepacker.backend.logging.Logger;
+import dabusmc.minepacker.backend.http.ModSortingOrder;
 import dabusmc.minepacker.frontend.base.Popup;
 import dabusmc.minepacker.frontend.base.ScreenRatio;
 import dabusmc.minepacker.frontend.cards.ModCard;
-import dabusmc.minepacker.frontend.components.MPHBox;
-import dabusmc.minepacker.frontend.components.MPScrollPane;
-import dabusmc.minepacker.frontend.components.MPSearchBar;
-import dabusmc.minepacker.frontend.components.MPVBox;
+import dabusmc.minepacker.frontend.components.*;
+import dabusmc.minepacker.frontend.components.custom.MPChoiceBoxWithLabel;
+import dabusmc.minepacker.frontend.components.custom.MPSearchBar;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javax.print.attribute.HashPrintJobAttributeSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,11 +30,17 @@ public class AddModsPopup extends Popup {
     private int m_MaxPageIndex;
     private String m_SearchParameter;
 
+    private ModSortingOrder m_SortingOrder;
+    private String m_SortingOrderString;
+
     public AddModsPopup() {
         super("MinePacker - Add Mods");
 
         m_Root = new MPVBox(7.5);
         m_SearchParameter = "";
+
+        m_SortingOrder = ModSortingOrder.Relevance;
+        m_SortingOrderString = "Relevance";
     }
 
     @Override
@@ -62,7 +67,19 @@ public class AddModsPopup extends Popup {
             reload();
         });
 
-        searchSettings.getChildren().addAll(searchBar);
+        ObservableList<String> options = FXCollections.observableArrayList("Relevance", "Downloads", "Follows", "Newest", "Updated");
+
+        MPChoiceBoxWithLabel sortingMethod = new MPChoiceBoxWithLabel(getWidth() * 0.5, "Sort By", options);
+        sortingMethod.setSelection(options.indexOf(m_SortingOrderString));
+
+        sortingMethod.setOnChanged(method -> {
+            m_SortingOrderString = method;
+            m_SortingOrder = MinePackerRuntime.Instance.getModApi().stringToSortingOrder(method);
+            m_CurrentPageIndex = 0;
+            reload();
+        });
+
+        searchSettings.getChildren().addAll(searchBar, sortingMethod);
 
         // Get the Mods from the API
         List<ModCard> cards = searchForMods();
@@ -168,7 +185,7 @@ public class AddModsPopup extends Popup {
     }
 
     private List<ModCard> searchForMods() {
-        JSONObject searchData = MinePackerRuntime.Instance.getModApi().search(m_SearchParameter, m_CurrentPageIndex, 10);
+        JSONObject searchData = MinePackerRuntime.Instance.getModApi().search(m_SearchParameter, m_CurrentPageIndex, 10, m_SortingOrder);
         m_MaxPageIndex = Integer.parseInt(searchData.get("total_hits").toString()) / 10;
 
         List<ModCard> cards = new ArrayList<>();

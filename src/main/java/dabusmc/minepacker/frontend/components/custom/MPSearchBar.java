@@ -1,11 +1,11 @@
-package dabusmc.minepacker.frontend.components;
+package dabusmc.minepacker.frontend.components.custom;
 
 import dabusmc.minepacker.frontend.cards.ModCard;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import dabusmc.minepacker.frontend.components.MPButtonImage;
+import dabusmc.minepacker.frontend.components.MPHBox;
+import dabusmc.minepacker.frontend.components.MPTextField;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 
 import java.io.InputStream;
@@ -33,7 +33,7 @@ public class MPSearchBar extends MPHBox {
         m_SearchArea = new MPTextField();
         m_SearchArea.setPromptText("Search...");
         m_SearchArea.setText(m_SearchTerm);
-        m_SearchArea.setFieldWidth(width * 0.75);
+        m_SearchArea.setFieldWidth(width * 0.5);
 
         InputStream iconData = ModCard.class.getResourceAsStream(SEARCH_IMAGE_FILE);
         Image icon = new Image(iconData);

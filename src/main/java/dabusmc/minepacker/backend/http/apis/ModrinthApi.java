@@ -5,6 +5,7 @@ import dabusmc.minepacker.backend.data.Mod;
 import dabusmc.minepacker.backend.data.projects.Project;
 import dabusmc.minepacker.backend.http.ModApi;
 import dabusmc.minepacker.backend.http.ModApiType;
+import dabusmc.minepacker.backend.http.ModSortingOrder;
 import dabusmc.minepacker.backend.logging.Logger;
 import org.json.simple.JSONObject;
 
@@ -33,15 +34,16 @@ public class ModrinthApi extends ModApi {
     }
 
     @Override
-    public JSONObject search(String query, int pageIndex, int pageLimit) {
+    public JSONObject search(String query, int pageIndex, int pageLimit, ModSortingOrder order) {
         //String extension = "search?query=\"" + query + "\"&facets=" + facets;
 
         String facets = generateFacets();
         String encodedQuery = URLEncoder.encode("\"" + (query == null ? "" : query) + "\"", StandardCharsets.UTF_8);
         String encodedOffset = URLEncoder.encode(Integer.toString(pageIndex * pageLimit), StandardCharsets.UTF_8);
         String encodedLimit = URLEncoder.encode(Integer.toString(pageLimit), StandardCharsets.UTF_8);
+        String encodedSorting = URLEncoder.encode(sortingOrderToString(order), StandardCharsets.UTF_8);
 
-        String extension = "search?query=" + encodedQuery + "&facets=" + facets + "&offset=" + encodedOffset + "&limit=" + encodedLimit;
+        String extension = "search?query=" + encodedQuery + "&facets=" + facets + "&offset=" + encodedOffset + "&limit=" + encodedLimit + "&index=" + encodedSorting;
 
         HttpResponse<String> response = get(getFinalURL(BASE_URL, extension), false);
         return convertHttpResponseToJSONObject(response);
@@ -69,9 +71,44 @@ public class ModrinthApi extends ModApi {
         m.setTitle(obj.get("title").toString());
         m.setTagline(obj.get("description").toString());
         m.setDescription(obj.get("body").toString());
-        m.setIconURL(obj.get("icon_url").toString());
+
+        if(obj.containsKey("icon_url") && obj.get("icon_url") != null) {
+            m.setIconURL(obj.get("icon_url").toString());
+        } else {
+            m.setIconURL("none");
+        }
+
         m.setProvider(ModApiType.Modrinth);
 
         return m;
+    }
+
+    @Override
+    public String sortingOrderToString(ModSortingOrder order) {
+        switch(order) {
+            case Relevance -> { return "relevance"; }
+            case Downloads -> { return "downloads"; }
+            case Follows -> { return "follows"; }
+            case Newest -> { return "newest"; }
+            case Updated -> { return "updated"; }
+        }
+        return "";
+    }
+
+    @Override
+    public ModSortingOrder stringToSortingOrder(String order) {
+        String check = order.toLowerCase();
+
+        if(check.equals("relevance")) {
+            return ModSortingOrder.Relevance;
+        } else if(check.equals("downloads")) {
+            return ModSortingOrder.Downloads;
+        } else if(check.equals("follows")) {
+            return ModSortingOrder.Follows;
+        } else if(check.equals("newest")) {
+            return ModSortingOrder.Newest;
+        } else {
+            return ModSortingOrder.Updated;
+        }
     }
 }
