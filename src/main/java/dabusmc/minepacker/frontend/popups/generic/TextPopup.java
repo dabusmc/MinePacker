@@ -1,7 +1,6 @@
-package dabusmc.minepacker.frontend.popups;
+package dabusmc.minepacker.frontend.popups.generic;
 
 import dabusmc.minepacker.frontend.base.Popup;
-import dabusmc.minepacker.frontend.base.ScreenRatio;
 import dabusmc.minepacker.frontend.components.MPButton;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import javafx.geometry.Insets;

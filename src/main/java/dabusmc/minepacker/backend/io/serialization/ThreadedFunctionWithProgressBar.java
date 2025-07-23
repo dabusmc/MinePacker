@@ -1,9 +1,7 @@
 package dabusmc.minepacker.backend.io.serialization;
 
-import dabusmc.minepacker.frontend.popups.ProgressBarPopup;
+import dabusmc.minepacker.frontend.popups.generic.ProgressBarPopup;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 
 import java.util.ArrayList;
 import java.util.List;

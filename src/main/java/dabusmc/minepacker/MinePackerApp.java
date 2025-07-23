@@ -9,7 +9,7 @@ import dabusmc.minepacker.backend.logging.LogLevel;
 import dabusmc.minepacker.backend.http.ModApiType;
 import dabusmc.minepacker.backend.io.serialization.Serializer;
 import dabusmc.minepacker.frontend.base.PageSwitcher;
-import dabusmc.minepacker.frontend.popups.YesNoPopup;
+import dabusmc.minepacker.frontend.popups.generic.YesNoPopup;
 import dabusmc.minepacker.frontend.threaded.ImageLoaderMT;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;

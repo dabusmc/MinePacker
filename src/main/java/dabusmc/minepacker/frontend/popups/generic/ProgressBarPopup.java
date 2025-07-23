@@ -1,13 +1,11 @@
-package dabusmc.minepacker.frontend.popups;
+package dabusmc.minepacker.frontend.popups.generic;
 
 import dabusmc.minepacker.frontend.base.Popup;
-import dabusmc.minepacker.frontend.components.MPButton;
 import dabusmc.minepacker.frontend.components.MPProgressBar;
 import dabusmc.minepacker.frontend.components.MPVBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 

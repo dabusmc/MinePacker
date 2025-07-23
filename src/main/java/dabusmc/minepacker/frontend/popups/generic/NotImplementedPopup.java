@@ -1,4 +1,4 @@
-package dabusmc.minepacker.frontend.popups;
+package dabusmc.minepacker.frontend.popups.generic;
 
 public class NotImplementedPopup extends TextPopup {
 

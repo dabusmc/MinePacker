@@ -1,10 +1,9 @@
-package dabusmc.minepacker.frontend.popups;
+package dabusmc.minepacker.frontend.popups.generic;
 
 import dabusmc.minepacker.frontend.base.PageSwitcher;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.Objects;
 
 public class FileChooserPopup {
 

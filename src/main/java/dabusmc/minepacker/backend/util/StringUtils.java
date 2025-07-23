@@ -16,6 +16,10 @@ public class StringUtils {
         return str;
     }
 
+    public static String preparePath(String path) {
+        return path.replace("\\", "/").replace("//", "/");
+    }
+
     public static String generateURLEncodedString(String... strings) {
         StringBuilder out = new StringBuilder();
         int i = 0;
